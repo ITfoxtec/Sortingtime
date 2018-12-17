@@ -1,0 +1,24 @@
+﻿@model Sortingtime.ViewModels.RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", Html.RouteCulture(), FormMethod.Post, true, new { autocomplete = "off", @class = "form-horizontal", role = "form" }))
+{
+    <div class="caption">
+        <div class="registration">
+            <div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.FullName, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.FULL_NAME") })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Email, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.EMAIL") })
+                </div>
+                <div class="form-group">
+                    @Html.PasswordFor(m => m.Password, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.PASSWORD") })
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("AUTH.SIGN_UP")" />
+                </div>
+            </div>
+        </div>
+        <small>@Html.Trans("AUTH.BY_CREATING_ACCOUNT") @Html.ActionLink(@Html.Trans("AUTH.BY_CREATING_ACCOUNT_LICENSING_TERMS"), "LicensingTerms", "E", Html.RouteCulture())</small>
+    </div>
+}

@@ -1,0 +1,11 @@
+﻿@{
+}
+
+@if (Html.IsParentCultureName("da"))
+{
+    @await Html.PartialAsync("_LicensingTermsDA")
+}
+else
+{
+    @await Html.PartialAsync("_CookiePolicyEN")
+}

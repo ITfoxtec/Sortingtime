@@ -1,0 +1,176 @@
+﻿<uib-tabset>
+    <uib-tab>
+        <uib-tab-heading>
+            <i class="glyphicon glyphicon-user"></i> {{'CONFIG.MY'|translate}}
+        </uib-tab-heading>
+        <div ng-controller="myController as myCtrl">
+            <form name="myCtrl.form" class="form-horizontal" autocomplete="off" novalidate>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label for="fullName" class="col-sm-3 control-label" translate-once="MY.FULL_NAME"></label>
+                            <div class="col-sm-9">
+                                <input name="fullName" type="text" class="form-control" ng-maxlength="200" required ng-model="myCtrl.currentUser.fullName" active-save="myCtrl.activeSaveFullName" />
+                                <field-error field="myCtrl.form.fullName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label" translate-once="MY.EMAIL"></label>
+                            <div class="col-sm-9">
+                                <input name="email" type="email" class="form-control" ng-maxlength="200" required ng-model="myCtrl.currentUser.email" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-default" ng-click="myCtrl.showPasswordDialog()"  ng-disabled="myCtrl.disabledChangeParssword" translate-once="MY.CHANGE_PASSWORD"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <modal m-title="{{'MY.CHANGE_PASSWORD'|translate}}" m-visible="myCtrl.showPasswordDialogToggle">
+                <form name="myCtrl.changePasswordForm" class="form-horizontal" autocomplete="off" novalidate>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-3 control-label" translate-once="MY.NEW_PASSWORD"></label>
+                        <div class="col-sm-9">
+                            <input name="password" type="password" class="form-control inactive-save" ng-minlength="5" ng-maxlength="100" required ng-model="myCtrl.currentUser.password" />
+                            <field-error field="myCtrl.changePasswordForm.password" />
+                        </div>
+                    </div>
+                    <div class="form-group form-group-button">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-default btn-primary" ng-click="myCtrl.savePassword()" translate-once="GENERAL.BUTTONS.DONE"></button>
+                            <button type="submit" class="btn btn-default" ng-click="myCtrl.cancelPasswordDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+                        </div>
+                    </div>
+                </form>
+            </modal>
+        </div>
+    </uib-tab>
+
+    <uib-tab ng-click="configCtrl.onUsersTabSelect()">
+        <uib-tab-heading>
+            <i class="glyphicon glyphicon-book"></i> {{'CONFIG.USERS'|translate}}
+        </uib-tab-heading>
+        <div ng-controller="userController as userCtrl">
+            <form name="userCtrl.form" class="form-horizontal" autocomplete="off" novalidate>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-default" ng-click="userCtrl.showCreateUserDialog()" ng-disabled="userCtrl.disabledAddUser" translate-once="USER.CREATE_USER"></button>
+                            </div>
+                            <div class="col-sm-9">
+                                <table class="table table-striped-editable">
+                                    <thead>
+                                        <tr>
+                                            <th translate-once="USER.NAME"></th>
+                                            <th translate-once="USER.EMAIL"></th>
+                                        </tr>
+                                    </thead>
+                                    <tr ng-repeat="user in userCtrl.users">
+                                        <td>
+                                            <i ng-if="user.you" class="glyphicon glyphicon-user"></i>
+                                            {{user.fullName}}
+                                        </td>
+                                        <td>
+                                            {{user.email}}
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <modal m-title="{{'USER.CREATE_USER'|translate}}" m-visible="userCtrl.showCreateUserDialogToggle">
+                <form name="userCtrl.createUserForm" class="form-horizontal" autocomplete="off" novalidate>
+                    <div class="form-group">
+                        <label for="fullName" class="col-sm-3 control-label" translate-once="USER.FULL_NAME"></label>
+                        <div class="col-sm-9">
+                            <input name="fullName" type="text" class="form-control inactive-save" ng-maxlength="200" required ng-model="userCtrl.newUser.fullName" />
+                            <field-error field="userCtrl.createUserForm.fullName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label" translate-once="USER.EMAIL"></label>
+                        <div class="col-sm-9">
+                            <input name="email" type="text" class="form-control inactive-save" ng-maxlength="200" required ng-model="userCtrl.newUser.email" />
+                            <field-error field="userCtrl.createUserForm.email" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-3 col-sm-9 control-label" style="text-align: left" translate-once="USER.SEND_EMAIL"></label>
+                    </div>
+                    <div class="form-group form-group-button">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-default btn-primary" ng-click="userCtrl.createUser()" translate-once="GENERAL.BUTTONS.DONE"></button>
+                            <button type="submit" class="btn btn-default" ng-click="userCtrl.cancelCreateUserDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+                        </div>
+                    </div>
+                </form>
+            </modal>
+        </div>
+    </uib-tab>
+
+    <uib-tab>
+        <uib-tab-heading translate-once="CONFIG.ORGANIZATION"></uib-tab-heading>
+        <div ng-controller="orgController as orgCtrl">
+            <form name="orgCtrl.form" class="form-horizontal" autocomplete="off" novalidate>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label for="Name" class="col-sm-3 control-label" translate-once="ORG.NAME"></label>
+                            <div class="col-sm-9">
+                                <input name="name" type="text" class="form-control" ng-maxlength="200" required ng-model="orgCtrl.currentOrganization.name" active-save="orgCtrl.activeSaveName" />
+                                <field-error field="orgCtrl.form.name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-sm-3 control-label" translate-once="ORG.ADDRESS"></label>
+                            <div class="col-sm-9">
+                                <div class="space-small-top">
+                                    <textarea name="address" type="text" class="form-control" rows="4" ng-maxlength="400" ng-model="orgCtrl.currentOrganization.address" active-save="orgCtrl.activeSaveAddress" />
+                                    <field-error field="orgCtrl.form.address" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstInvoiceNumber" class="col-sm-3 control-label" translate-once="ORG.FIRSTINVOICENUMBER"></label>
+                            <div class="col-sm-9">
+                                <input name="firstInvoiceNumber" type="text" class="form-control" number-format min="0" whole-number="true" ng-model="orgCtrl.currentOrganization.firstInvoiceNumber" active-save="orgCtrl.activeSaveFirstInvoiceNumber" />
+                                <field-error field="orgCtrl.form.firstInvoiceNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-default" ng-click="orgCtrl.showCultureDialog()" translate-once="ORG.CHANGE_COUNTRY_AND_LANGUAGE"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <modal m-title="{{'ORG.CHANGE_COUNTRY_AND_LANGUAGE'|translate}}" m-visible="orgCtrl.showCultureDialogToggle">
+                <form name="orgCtrl.changeCultureForm" class="form-horizontal" autocomplete="off" novalidate>
+                    <div class="form-group">
+                        <label for="culture" class="col-sm-4 control-label" translate-once="ORG.SELECT_COUNTRY_AND_LANGUAGE"></label>
+                        <div class="col-sm-8">
+                            <select ng-model="orgCtrl.currentOrganization.culture" class="form-control" ng-options="item.name as item.label | translate for item in orgCtrl.cultures"></select>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-button">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" class="btn btn-default btn-primary" ng-click="orgCtrl.saveCulture()" translate-once="GENERAL.BUTTONS.DONE"></button>
+                            <button type="submit" class="btn btn-default" ng-click="orgCtrl.cancelCultureDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+                        </div>
+                    </div>
+                </form>
+            </modal>
+        </div>
+    </uib-tab>
+
+</uib-tabset>

@@ -1,0 +1,17 @@
+﻿@model Sortingtime.ViewModels.LoginViewModel
+
+@using (Html.BeginForm("Login", "Account", Html.RouteCulture(), FormMethod.Post, true, new { id = "loginForm", autocomplete = "off", @class = "navbar-form navbar-right" }))
+{	
+	<div class="form-group" style="vertical-align: top">
+		@Html.TextBoxFor(m => m.Email, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.EMAIL"), style = "width: 220px" })
+        @Html.HiddenFor(m => m.RememberMe)
+	</div>
+	<div class="form-group" style="vertical-align: top">
+		@Html.PasswordFor(m => m.Password, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.PASSWORD"), style = "width: 160px" })	
+		<button type="submit" class="btn btn-default btn-primary">@Html.Trans("AUTH.LOGIN")</button>
+		<br />
+		<div style="margin-top: 3px">
+			@Html.ActionLink(Html.Trans("AUTH.FORGOT_PASSWORD"), "ForgotPassword", "Account", Html.RouteCulture())
+		</div>
+	</div>
+}

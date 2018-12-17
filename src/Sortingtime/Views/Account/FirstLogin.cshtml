@@ -1,0 +1,57 @@
+﻿@model Sortingtime.ViewModels.FirstLoginViewModel
+
+@{
+	ViewBag.Title = @Html.Trans("AUTH.FIRST_LOGIN");
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-offset-2 col-md-10">
+        @using (Html.BeginForm("FirstLogin", "Account", Html.RouteCulture(), FormMethod.Post, true, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h3>@ViewBag.Title</h3>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Code)
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, Html.Trans("AUTH.EMAIL"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, Html.Trans("AUTH.CHOOSE_PASSWORD"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group form-group-button">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("AUTH.LOGIN")" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 space-top">
+                    @Html.ActionLink(Html.Trans("AUTH.FORGOT_PASSWORD"), "ForgotPassword", Html.RouteCulture())
+                </div>
+                <div class="col-sm-12">
+                    @Html.ActionLink(Html.Trans("AUTH.FIRST_LOGIN_LINK"), "Login", "Account", Html.RouteCulture()) @Html.Trans("AUTH.FIRST_LOGIN_TEXT")
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ScriptsPartial"); }
+}
+
+

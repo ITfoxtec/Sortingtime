@@ -1,0 +1,151 @@
+﻿<form name="ttCtrl.form" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
+            <date-day-select ng-model="ttCtrl.dateCursor" update="ttCtrl.updateDateCursor" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table time-page-table">
+                <colgroup>
+                    <col class="col1" />
+                    <col class="col2" />
+                    <col class="col3" />
+                    <col />
+                    <col class="col5" />
+                    <col class="col6 hidden-xs" />
+                    <col class="col6 hidden-xs" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="3" translate-once="TIME.GROUP"></th>
+                        <th class="text-right small">{{::'TIME.TIME'|translate}} <span ng-if="ttCtrl.dayTotal" class="badge">{{ttCtrl.dayTotal | time}}</span></th>
+                        <th class="text-right hidden-xs small">{{::'TIME.WEEK_TOTAL'|translate}} <span ng-if="ttCtrl.weekTotal" class="badge">{{ttCtrl.weekTotal | time}}</span></th>
+                        <th class="text-right hidden-xs small">{{::'TIME.MONTH_TOTAL'|translate}} <span ng-if="ttCtrl.monthTotal" class="badge">{{ttCtrl.monthTotal | time}}</span></th>
+                    </tr>
+                </thead>
+                <tr ng-if="::(item.type==='g' && (item.state===undefined || item.state==='n'))" ng-repeat-start="item in ttCtrl.pageItems track by item.uniqId" ng-form="groupForm">
+                    <td>
+                        <i class="btn glyphicon glyphicon-remove delete-btn btn-sm" translate-once-title="TIME.REMOVE" ng-click="::ttCtrl.removeGroup(item)"></i>
+                    </td>
+                    <td colspan="3">
+                        <group-task-dropdown ng-model="item" group-task-form="::groupForm" select-items="::ttCtrl.getGroups" create-active-save="::ttCtrl.activeSaveGroup">
+                            <input name="group" type="text" class="form-control inactive-save" ng-maxlength="220" required ng-model="item.name" set-focus="{{::item.state==='n'}}" translate-once-placeholder="TIME.GROUP_PLACEHOLDER" />
+                            <field-error field="::groupForm.group" />
+                        </group-task-dropdown>
+                    </td>
+                    <td></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                </tr>
+                <tr ng-if="::(item.type==='g' && (item.state===undefined || item.state==='n'))" class="sub-table table-time">
+                    <th colspan="2"></th>
+                    <th></th>
+                    <th colspan="1" translate-once="TIME.TASK"></th>
+                    <th class="text-right">{{::'TIME.TIME'|translate}} <span class="badge" ng-if="item.dayTaskTotal">{{item.dayTaskTotal | time}}</span></th>
+                    <th class="text-right hidden-xs">{{::'TIME.WEEK_TOTAL'|translate}} <span class="badge" ng-if="item.weekTaskTotal">{{item.weekTaskTotal | time}}</span></th>
+                    <th class="text-right hidden-xs">{{::'TIME.MONTH_TOTAL'|translate}} <span class="badge" ng-if="item.monthTaskTotal">{{item.monthTaskTotal | time}}</span></th>
+                </tr>
+                <tr ng-if="::(item.type==='g' && item.state==='b')">
+                    <td colspan="5">
+                        <button type="submit" class="btn btn-default" ng-click="::ttCtrl.addGroup(item)" translate-once="TIME.ADD_GROUP"></button>
+                    </td>
+                    <td colspan="2" class="hidden-xs"></td>
+                </tr>
+                <tr ng-if="::(item.type==='t' && (item.state===undefined || item.state==='n'))" class="sub-table table-time" ng-form="taskForm">
+                    <td colspan="2"></td>
+                    <td>
+                        <i class="btn glyphicon glyphicon-remove delete-btn btn-sm" translate-once-title="TIME.REMOVE" ng-click="::ttCtrl.removeTask(item)"></i>
+                    </td>
+                    <td colspan="1">
+                        <group-task-dropdown ng-model="item" group-task-form="::taskForm" select-items="::ttCtrl.getTasks" create-active-save="::ttCtrl.activeSaveTask">
+                            <input name="task" type="text" class="form-control input-sm inactive-save" ng-maxlength="220" required ng-model="item.name" set-focus="{{::item.state==='n'}}" translate-once-placeholder="TIME.TASK_PLACEHOLDER" />
+                            <field-error field="::taskForm.task" />
+                        </group-task-dropdown>
+                    </td>
+                    <td class="text-right input-sm-insight">
+                        <div>
+                            <div class="glyphicon-input-group-left">
+                                <button class="btn btn-invisible btn-xs glyphicon glyphicon-hourglass" type="button" ng-click="::ttCtrl.showTimerDialog(item, taskForm)" />
+                                <input name="taskItem" type="text" class="form-control input-sm text-right" max="1440" hide-zero="true" time-format ng-model="item.time" placeholder="0:00" focus-event="true" active-save="::ttCtrl.activeSaveTaskItem" active-save-model="item" active-save-form="::taskForm" />
+                            </div>
+                        </div>
+                        <field-error field="taskForm.taskItem" />
+                    </td>
+                    <td class="text-right hidden-xs">
+                        <div class="form-control-static input-sm">
+                            {{item.weekTaskTotal | time}}
+                        </div>
+                    </td>
+                    <td class="text-right hidden-xs">
+                        <div class="form-control-static input-sm">
+                            {{item.monthTaskTotal | time}}
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="::(item.type==='t' && item.state==='b')" class="sub-table table-time">
+                    <td colspan="2"></td>
+                    <td colspan="3">
+                        <button type="submit" class="btn btn-default btn-sm" ng-click="::ttCtrl.addTask(item)" translate-once="TIME.ADD_TASK"></button>
+                    </td>
+                    <td colspan="2" class="text-right hidden-xs"></td>
+                </tr>
+                <tr ng-repeat-end ng-if="::item.state==='b'" class="space-table">
+                    <td colspan="8"></td>
+                </tr>
+                <tr class="space-table">
+                    <td colspan="8"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+
+<modal m-title="{{'TIME.TIME_CALCULATOR'|translate}}" m-visible="ttCtrl.showTimerDialogToggle">
+    <form name="ttCtrl.timerForm" class="form-horizontal" autocomplete="off" novalidate>
+        <div class="form-group">
+            <label for="fromTime" class="col-sm-3 control-label" translate-once="TIME.TIME_FROM"></label>
+            <div class="col-sm-3">
+                <div class="glyphicon-input-group-left">
+                    <input name="fromTime" type="text" class="form-control text-right" max="1440" step="1" placeholder="0:00" time-format ng-model="ttCtrl.timerData.item.calcFromTime" active-save="ttCtrl.activeCalcTime" active-save-data="{ timeTask: ttCtrl.timerData.item, form: ttCtrl.timerForm }" />
+                </div>
+                <field-error field="ttCtrl.timerForm.calcFromTime" />
+            </div>
+            <label for="toTime" class="col-sm-2 control-label" translate-once="TIME.TIME_TO"></label>
+            <div class="col-sm-3">
+                <div class="glyphicon-input-group-left">
+                    <input name="toTime" type="text" class="form-control text-right" max="1440" step="1" placeholder="0:00" time-format ng-model="ttCtrl.timerData.item.calcToTime" active-save="ttCtrl.activeCalcTime" active-save-data="{ timeTask: ttCtrl.timerData.item, form: ttCtrl.timerForm }" />
+                </div>
+                <field-error field="ttCtrl.timerForm.calcToTime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="calcBrakeTime" class="col-sm-3 control-label" translate-once="TIME.BRAKE"></label>
+            <div class="col-sm-5">
+                <div class="glyphicon-input-group-left">
+                    <select name="braketime" ng-model="ttCtrl.timerData.item.calcBrakeTime" class="form-control" ng-options="item.time as item.label | translate for item in ttCtrl.brakes" active-save="ttCtrl.activeCalcTime" active-save-data="{ timeTask: ttCtrl.timerData.item, form: ttCtrl.timerForm }" ></select>
+                </div>
+                <field-error field="ttCtrl.timerForm.calcTotime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="calcTime" class="col-sm-3 control-label" translate-once="TIME.TIME_RESULT"></label>
+            <div class="col-sm-3">
+                <div class="glyphicon-input-group-left">
+                    <div class="form-control-static">
+                        {{ttCtrl.timerData.item.calcTime | time}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="ttCtrl.saveCalcTime()" translate-once="GENERAL.BUTTONS.DONE"></button>
+                <button type="submit" class="btn btn-default" ng-click="ttCtrl.cancelTimerDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+

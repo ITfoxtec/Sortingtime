@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Oprettet af Microsoft Visio, SVG-eksport demo.svg Side-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		width="0.715215in" height="0.761798in" viewBox="0 0 51.4955 54.8494" xml:space="preserve"
+		color-interpolation-filters="sRGB" class="st5">
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:none;stroke:#000000;stroke-width:1}
+		.st2 {stroke:#000000;stroke-width:1}
+		.st3 {fill:none;stroke:none;stroke-width:0.25}
+		.st4 {fill:#c9c9c9;font-family:Calibri;font-size:1.5em;font-weight:bold}
+		.st5 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g>
+		<title>Side-1</title>
+		<g id="group28-1" transform="translate(5.30756,-1)">
+			<title>Ark.28</title>
+			<g id="shape29-2">
+				<title>Ark.29</title>
+				<rect x="0" y="16.456" width="36.7256" height="38.3934" class="st1"/>
+			</g>
+			<g id="shape30-4" transform="translate(9.83091,-13.2244)">
+				<title>Cirkel</title>
+				<path d="M0 46.32 A8.53187 8.53187 0 1 1 17.06 46.32 A8.53187 8.53187 0 1 1 0 46.32 Z" class="st1"/>
+			</g>
+			<g id="shape31-6" transform="translate(20.6728,-0.511873)">
+				<title>Ark.31</title>
+				<path d="M0 42.14 L5.58 44.84 L3.07 47.19 L3.75 54.85" class="st2"/>
+			</g>
+			<g id="shape32-9" transform="translate(15.5877,-0.511873) scale(-1,1)">
+				<title>Ark.32</title>
+				<path d="M0 42.14 L5.58 44.84 L3.07 47.19 L3.75 54.85" class="st2"/>
+			</g>
+		</g>
+		<g id="shape33-12" transform="translate(0.25,-20.5407)">
+			<title>Ark.33</title>
+			<desc>?</desc>
+			<rect x="0" y="24.7509" width="25.511" height="30.0986" class="st3"/>
+			<text x="8.59" y="45.2" class="st4">?</text>		</g>
+		<g id="shape35-15" transform="translate(15.7577,-24.5009)">
+			<title>Ark.35</title>
+			<desc>?</desc>
+			<rect x="0" y="24.7509" width="25.511" height="30.0986" class="st3"/>
+			<text x="8.59" y="45.2" class="st4">?</text>		</g>
+		<g id="shape36-18" transform="translate(25.7345,-11.9401)">
+			<title>Ark.36</title>
+			<desc>?</desc>
+			<rect x="0" y="24.7509" width="25.511" height="30.0986" class="st3"/>
+			<text x="8.59" y="45.2" class="st4">?</text>		</g>
+	</g>
+</svg>

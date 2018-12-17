@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form name="fooCtrl.supportForm" class="form-horizontal" autocomplete="off" novalidate>
+            <h3 style="margin-top: 0px" translate-once="SUPPORT.SUPPORT"></h3>
+            <p translate-once="SUPPORT.TOP_TEXT">
+            </p><br />
+            <div class="form-group">
+                <label for="message" class="col-sm-3 control-label" translate-once="SUPPORT.MESSAGE"></label>
+                <div class="col-sm-9">
+                    <textarea name="message" type="text" class="form-control inactive-save" rows="10" ng-maxlength="4000" required ng-model="fooCtrl.supportMessage" />
+                    <field-error field="fooCtrl.supportForm.message" />
+                </div>
+            </div>
+            <div class="form-group form-group-button">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-default btn-primary" ng-click="fooCtrl.sendSupportMessage()" translate-once="SUPPORT.SEND_MESSAGE"></button>
+                    <button type="submit" class="btn btn-default" ng-click="fooCtrl.close()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

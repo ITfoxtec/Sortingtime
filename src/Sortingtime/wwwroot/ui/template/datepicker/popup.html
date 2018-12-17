@@ -1,0 +1,8 @@
+﻿<div>
+    <ul class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
+        <li ng-transclude></li>
+        <li ng-if="showButtonBar" style="padding:0px" class="uib-button-bar">
+            <button type="button" class="btn btn-default btn-sm" role="today" ng-click="select('today', $event)" ng-disabled="isDisabled('today')">{{ getText('current') }}</button>
+        </li>
+    </ul>
+</div>

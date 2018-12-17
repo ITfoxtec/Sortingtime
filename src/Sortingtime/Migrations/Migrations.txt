@@ -1,0 +1,13 @@
+﻿Package Manager Console:
+
+cd .\Sortingtime\src\Sortingtime
+
+dotnet ef migrations add InitialDatabase
+dotnet ef migrations add Update1
+.
+.
+dotnet ef migrations add UpdateX
+
+dotnet ef database update
+
+

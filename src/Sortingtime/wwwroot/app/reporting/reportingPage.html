@@ -1,0 +1,437 @@
+﻿<form name="rpCtrl.form" autocomplete="off" novalidate>
+
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
+            <date-month-select divided-scale="false" ng-model="rpCtrl.dateCursor" update="rpCtrl.updateDateCursor" />
+        </div>
+    </div>
+
+    <div class="row page-menu">
+        <div class="col-md-6 col-sm-7 col-xs-8">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default" ng-class="{ 'active':rpCtrl.reportTabAvtive }" ng-click="rpCtrl.reportTabAvtive = true">
+                    <input type="radio" name="options" id="option1" autocomplete="off"> <i class="glyphicon glyphicon-screenshot"></i> {{'REPORT.SORTING'|translate}}
+                </label>
+                <label class="btn btn-default" ng-class="{ 'active':!rpCtrl.reportTabAvtive }" ng-click="rpCtrl.reportTabAvtive = false">
+                    <input type="radio" name="options" id="option2" autocomplete="off"> <i class="glyphicon glyphicon-book"></i> {{'REPORT.OVERVIEW'|translate}}
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-5 col-xs-4">
+            <div class="pull-right" ng-if="rpCtrl.reportTabAvtive">
+                <button type="submit" class="btn btn-default btn-primary" ng-disabled="!rpCtrl.report || rpCtrl.emptyReport" ng-click="rpCtrl.showCreateReportDialog()" translate-once="REPORT.CREATE_REPORT"></button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="rpCtrl.reportTabAvtive">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <colgroup>
+                        <col style="width:35%">
+                        <col style="width:45%">
+                        <col style="width:20%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th translate-once="REPORT.GROUP"></th>
+                            <th translate-once="REPORT.TASK"></th>
+                            <th class="text-right">{{'REPORT.TIME'|translate}} <span class="badge" ng-if="rpCtrl.report">{{rpCtrl.report.monthTotal | time}}</span></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td ng-if="!rpCtrl.report || rpCtrl.emptyReport" colspan="3"><div ng-if="!rpCtrl.report">&nbsp;</div><i ng-if="rpCtrl.emptyReport" translate-once="REPORT.NO_TIME_REGISTERED"></i></td>
+                    </tr>
+                    <tr ng-if="!rpCtrl.emptyReport" ng-repeat="reportTotal in rpCtrl.report.groupTaskTotals" class="table-select" ng-click="rpCtrl.toggleSelectTotalTask($event, reportTotal)" translate-once-title="REPORT.SELECT_TASK">
+                        <td ng-if="::reportTotal.group" class="{{reportTotal.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectTotalGroup($event, reportTotal)" translate-once-title="REPORT.SELECT_GROUP">{{::reportTotal.group}}</td>
+                        <td ng-if="::!reportTotal.group" class="{{reportTotal.selected ? 'selected' : ''}}">{{::reportTotal.group}}</td>
+                        <td class="{{reportTotal.selected ? 'selected' : ''}}">{{::reportTotal.task}}</td>
+                        <td class="text-right {{reportTotal.selected ? 'selected' : ''}}">{{::reportTotal.monthTotal | time}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="{{rpCtrl.daysInMonth + 3}}" class="hidden-xs" translate-once="REPORT.PERSON_TIME"></th>
+                            <th colspan="3" class="visible-xs" translate-once="REPORT.PERSON_TIME"></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td ng-if="rpCtrl.emptyReport" colspan="{{rpCtrl.daysInMonth + 3}}"><i translate-once="REPORT.NO_TIME_REGISTERED"></i></td>
+                    </tr>
+                    <tr ng-if="!rpCtrl.emptyReport" ng-repeat="reportFlat in rpCtrl.reportsFlattened" class="{{::(reportFlat.type=='groupTask' || reportFlat.type=='groupTaskHead') ? 'sub-table table-report sub-table-select' : (reportFlat.type=='space' ? 'space-table' : 'table-select')}}" ng-click="::reportFlat.type=='groupTask' ? rpCtrl.toggleSelectTask($event, reportFlat) : null" translate-once-title="REPORT.SELECT_TASK">
+                        <td ng-if="::reportFlat.type=='user'" colspan="{{::rpCtrl.daysInMonth + 3}}" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectUser($event, reportFlat)" translate-once-title="REPORT.SELECT_USER">{{::reportFlat.fullName}} <span class="badge">{{::reportFlat.monthTotal | time}}</span></td>
+                        <td ng-if="::reportFlat.type=='user'" colspan="3" class="visible-xs {{reportFlat.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectUser($event, reportFlat)" translate-once-title="REPORT.SELECT_USER">{{::reportFlat.fullName}} <span class="badge">{{::reportFlat.monthTotal | time}}</span></td>
+
+                        <th ng-if="::reportFlat.type=='groupTaskHead'" class="{{reportFlat.user.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectUser($event, reportFlat.user)" translate-once-title="REPORT.SELECT_USER"></th>
+                        <th ng-if="::reportFlat.type=='groupTaskHead'" translate-once="REPORT.GROUP" title=""></th>
+                        <th ng-if="::reportFlat.type=='groupTaskHead'" translate-once="REPORT.TASK" title=""></th>
+                        <th ng-if="::reportFlat.type=='groupTaskHead'" class="hidden-xs" title="">1</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 1)" class="hidden-xs" title="">2</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 2)" class="hidden-xs" title="">3</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 3)" class="hidden-xs" title="">4</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 4)" class="hidden-xs" title="">5</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 5)" class="hidden-xs" title="">6</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 6)" class="hidden-xs" title="">7</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 7)" class="hidden-xs" title="">8</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 8)" class="hidden-xs" title="">9</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 9)" class="hidden-xs" title="">10</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 10)" class="hidden-xs" title="">11</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 11)" class="hidden-xs" title="">12</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 12)" class="hidden-xs" title="">13</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 13)" class="hidden-xs" title="">14</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 14)" class="hidden-xs" title="">15</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 15)" class="hidden-xs" title="">16</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 16)" class="hidden-xs" title="">17</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 17)" class="hidden-xs" title="">18</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 18)" class="hidden-xs" title="">19</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 19)" class="hidden-xs" title="">20</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 20)" class="hidden-xs" title="">21</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 21)" class="hidden-xs" title="">22</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 22)" class="hidden-xs" title="">23</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 23)" class="hidden-xs" title="">24</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 24)" class="hidden-xs" title="">25</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 25)" class="hidden-xs" title="">26</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 26)" class="hidden-xs" title="">27</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 27)" class="hidden-xs" title="">28</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 28)" class="hidden-xs" title="">29</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 29)" class="hidden-xs" title="">30</th>
+                        <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 30)" class="hidden-xs" title="">31</th>
+
+                        <td ng-if="::reportFlat.type=='groupTask'" class="{{reportFlat.user.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectUser($event, reportFlat.user)" translate-once-title="REPORT.SELECT_USER"></td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && reportFlat.group)" class="{{reportFlat.selected ? 'selected' : ''}}" ng-click="rpCtrl.toggleSelectGroup($event, reportFlat)" translate-once-title="REPORT.SELECT_GROUP">{{::reportFlat.group}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && !reportFlat.group)" class="{{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.group}}</td>
+                        <td ng-if="::reportFlat.type=='groupTask'" class="{{reportFlat.selected ? 'selected' : ''}}">{{reportFlat.task}} <span class="badge">{{::reportFlat.monthTotal | time}}</span></td>
+                        <td ng-if="::reportFlat.type=='groupTask'" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[0].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 1)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[1].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 2)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[2].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 3)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[3].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 4)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[4].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 5)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[5].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 6)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[6].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 7)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[7].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 8)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[8].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 9)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[9].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 10)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[10].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 11)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[11].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 12)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[12].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 13)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[13].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 14)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[14].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 15)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[15].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 16)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[16].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 17)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[17].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 18)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[18].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 19)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[19].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 20)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[20].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 21)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[21].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 22)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[22].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 23)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[23].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 24)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[24].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 25)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[25].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 26)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[26].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 27)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[27].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 28)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[28].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 29)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[29].timeView}}</td>
+                        <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 30)" class="hidden-xs {{reportFlat.selected ? 'selected' : ''}}">{{::reportFlat.allWorks[30].timeView}}</td>
+
+                        <td ng-if="::reportFlat.type=='space'" title=""></td>
+                        <td ng-if="::reportFlat.type=='space'" colspan="2" title=""></td>
+                        <td ng-if="::reportFlat.type=='space'" colspan="{{::rpCtrl.daysInMonth}}" class="hidden-xs" title=""></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!rpCtrl.reportTabAvtive">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <colgroup>
+                        <col style="width:15%">
+                        <col style="width:auto">
+                        <col style="width:auto">
+                        <col style="width:20%">
+                        <col style="width:20%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th translate-once="REPORT.NUMBER"></th>
+                            <th translate-once="REPORT.STATE"></th>
+                            <th translate-once="REPORT.SEND_TO"></th>
+                            <th class="text-right">{{'REPORT.REPORT_TIME'|translate}} <span class="badge" ng-if="rpCtrl.reportItems.totalTime">{{rpCtrl.reportItems.totalTime | time}}</span></th>
+                            <th translate-once="REPORT.DOWNLOAD"></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td ng-if="!rpCtrl.reportItems || rpCtrl.reportItems.length <= 0" colspan="5"><i translate-once="REPORT.NO_REPORTS"></i></td>
+                    </tr>
+                    <tr ng-if="rpCtrl.reportItems && rpCtrl.reportItems.length > 0" ng-repeat="reportItem in rpCtrl.reportItems" class="table-select" translate-once-title="REPORT.VIEW_DETAILS">
+                        <td ng-click="rpCtrl.showReportItemMenu($event, $index, reportItem)" class="{{(rpCtrl.reportItemMenuIsOpen && reportItem.selected) || reportItem.selectedPopup ? 'selected' : ''}}">{{::reportItem.number}}</td>
+                        <td ng-click="rpCtrl.showReportItemMenu($event, $index, reportItem)" class="{{(rpCtrl.reportItemMenuIsOpen && reportItem.selected) || reportItem.selectedPopup ? 'selected' : ''}}">{{(reportItem.status == 100 ? 'REPORT.STATE_CREATED' : (reportItem.status == 200 ? 'REPORT.STATE_RESENDING' : (reportItem.status == 600 ? 'REPORT.STATE_RESEND' : 'REPORT.STATE_SEND')))|translate}}</td>
+                        <td ng-click="rpCtrl.showReportItemMenu($event, $index, reportItem)" class="{{(rpCtrl.reportItemMenuIsOpen && reportItem.selected) || reportItem.selectedPopup ? 'selected' : ''}}">{{reportItem.toEmail}}</td>
+                        <td class="text-right {{(rpCtrl.reportItemMenuIsOpen && reportItem.selected) || reportItem.selectedPopup ? 'selected' : ''}}" ng-click="rpCtrl.showReportItemMenu($event, $index, reportItem)">{{::reportItem.totalTime | time}}</td>
+                        <td class="{{(rpCtrl.reportItemMenuIsOpen && reportItem.selected) || reportItem.selectedPopup ? 'selected' : ''}}" style="cursor:default"><a class="btn-link" ng-disabled="reportItem.status < 500" target="_blank" href="/api/reportpdf/{{::reportItem.id}}" title="" download>{{'REPORT.REPORT'|translate}} {{::reportItem.number}}.pdf</a></td>
+                    </tr>
+                </table>
+                <div id="reportItemMenuContainder">
+                    <div id="reportItemMenu" class="table-dropdown" uib-dropdown is-open="rpCtrl.reportItemMenuIsOpen">
+                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                            <li role="menuitem"><a ng-click="rpCtrl.showDetailReportItem($event)" translate-once="REPORT.RESEND_REPORT"></a></li>
+                            <li class="divider"></li>
+                            <li role="menuitem"><a ng-click="rpCtrl.showDeleteReportDialog($event)" translate-once="REPORT.DELETE_REPORT"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<modal m-title="{{'REPORT.NEW_REPORT'|translate}}" m-sizes="modal-lg" m-visible="rpCtrl.showCreateReportDialogToggle">
+    <form name="rpCtrl.createReportForm" class="form-horizontal" autocomplete="off" novalidate>
+        <uib-tabset active="rpCtrl.CreateReportTabAvtive">
+            <uib-tab>
+                <uib-tab-heading translate-once="REPORT.REPORT_EMAIL"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="sendToEmail" type="text" class="form-control inactive-save" ng-maxlength="400" translate-once-title="REPORT.SEND_TO_EMAIL" translate-once-placeholder="REPORT.SEND_TO_EMAIL" required ng-model="rpCtrl.reportSentToEmail" />
+                        <field-error field="rpCtrl.createReportForm.sendToEmail" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="REPORT.EMAIL_SUBJECT" translate-once-placeholder="REPORT.EMAIL_SUBJECT" required ng-model="rpCtrl.reportEmailSubject" />
+                        <field-error field="rpCtrl.createReportForm.emailSubject" />
+                    </div>
+                    <label class="col-sm-3 control-label" style="text-align:left"><i>#{{'REPORT.REPORT_NUMBER_ADDED'|translate}}</i></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="REPORT.EMAIL_BODY" translate-once-placeholder="REPORT.EMAIL_BODY" ng-model="rpCtrl.reportEmailBody" />
+                        <field-error field="rpCtrl.createReportForm.emailBody" />
+                    </div>
+                </div>
+            </uib-tab>
+
+            <uib-tab>
+                <uib-tab-heading translate-once="REPORT.ATTACHED_PDF_TIME_REPORT"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-3 hidden-xs">
+                        <logo-file ng-model="rpCtrl.organizationLogo" />
+                    </div>
+                    <div class="col-sm-6">
+                        <div>
+                            <input name="reportTitle" type="text" class="form-control inactive-save title" ng-maxlength="200" translate-once-title="REPORT.REPORT_TITLE" translate-once-placeholder="REPORT.REPORT_TITLE" ng-model="rpCtrl.reportTitle" />
+                            <field-error field="rpCtrl.createReportForm.reportTitle" />
+                        </div>
+                        <div class="space-small-top">
+                            <textarea name="reportSubTitle" type="text" rows="2" class="form-control inactive-save text-center" ng-maxlength="400" translate-once-title="REPORT.REPORT_TITLE_SUB_TEXT" translate-once-placeholder="REPORT.REPORT_TITLE_SUB_TEXT" ng-model="rpCtrl.reportSubTitle" />
+                            <field-error field="rpCtrl.createReportForm.reportSubTitle" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div>
+                            <input name="reportOrganisation" type="text" class="form-control" ng-maxlength="200" translate-once-title="REPORT.YOUR_ORGANISATION" translate-once-placeholder="REPORT.YOUR_ORGANISATION" ng-model="rpCtrl.currentOrganization.name" active-save="rpCtrl.activeSaveOrganizationName" />
+                            <field-error field="rpCtrl.createReportForm.reportOrganisation" />
+                        </div>
+                        <div class="space-small-top">
+                            <textarea name="reportAddress" type="text" class="form-control" rows="4" ng-maxlength="400" translate-once-title="REPORT.YOUR_ORGANISATION_ADDRESS" translate-once-placeholder="REPORT.YOUR_ORGANISATION_ADDRESS" ng-model="rpCtrl.currentOrganization.address" active-save="rpCtrl.activeSaveOrganizationAddress" />
+                            <field-error field="rpCtrl.createReportForm.reportAddress" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="reportText" type="text" class="form-control inactive-save" rows="5" ng-maxlength="4000" translate-once-title="REPORT.REPORT_TEXT" translate-once-placeholder="REPORT.REPORT_TEXT" ng-model="rpCtrl.reportText" />
+                        <field-error field="rpCtrl.createReportForm.reportText" />
+                    </div>
+                </div>
+
+                <div style="overflow:auto">
+                    <table class="table" style="min-width: 850px">
+                        <colgroup>
+                            <col ng-if="rpCtrl.showGroupCollRaportDialog" style="width:auto">
+                            <col style="width:auto">
+                            <col style="width:20%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th ng-if="rpCtrl.showGroupCollRaportDialog" translate-once="REPORT.GROUP"></th>
+                                <th translate-once="REPORT.TASK"></th>
+                                <th class="text-right">{{'REPORT.TIME'|translate}} <small ng-if="rpCtrl.groupTaskTotalsSelected.length > 1">({{rpCtrl.monthTotalSelected | time}})</small></th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="reportTotal in rpCtrl.groupTaskTotalsSelected">
+                            <td ng-if="::rpCtrl.showGroupCollRaportDialog">{{::reportTotal.group}}</td>
+                            <td>{{::reportTotal.task}}</td>
+                            <td class="text-right">{{::reportTotal.monthTotal | time}}</td>
+                        </tr>
+                    </table>
+
+                    <table class="table" style="min-width: 850px">
+                        <thead>
+                            <tr>
+                                <th colspan="{{rpCtrl.daysInMonth + 3}}" class="hidden-xs" translate-once="REPORT.PERSON_TIME"></th>
+                                <th colspan="3" class="visible-xs" translate-once="REPORT.PERSON_TIME"></th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="reportFlat in rpCtrl.reportsFlattenedSelected" class="{{::(reportFlat.type=='groupTask' || reportFlat.type=='groupTaskHead') ? 'sub-table table-report' : (reportFlat.type=='space' ? 'space-table' : '')}}">
+                            <td ng-if="::reportFlat.type=='user'" colspan="{{::(rpCtrl.daysInMonth + 3)}}">{{::reportFlat.fullName}} <small ng-if="reportFlat.selectedCount > 1">({{::reportFlat.monthTotal | time}})</small></td>
+
+                            <th ng-if="::reportFlat.type=='groupTaskHead'"></th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'" class="{{rpCtrl.showGroupCollRaportDialog ? '' : 'collapse'}}" translate-once="REPORT.GROUP"></th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'" translate-once="REPORT.TASK"></th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">1</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">2</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">3</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">4</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">5</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">6</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">7</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">8</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">9</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">10</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">11</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">12</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">13</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">14</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">15</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">16</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">17</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">18</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">19</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">20</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">21</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">22</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">23</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">24</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">25</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">26</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">27</th>
+                            <th ng-if="::reportFlat.type=='groupTaskHead'">28</th>
+                            <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 28)">29</th>
+                            <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 29)">30</th>
+                            <th ng-if="::(reportFlat.type=='groupTaskHead' && rpCtrl.daysInMonth > 30)">31</th>
+
+                            <td ng-if="::reportFlat.type=='groupTask'"></td>
+                            <td ng-if="::reportFlat.type=='groupTask'" class="{{rpCtrl.showGroupCollRaportDialog ? '' : 'collapse'}}">{{::reportFlat.group}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.task}} <small>({{::reportFlat.monthTotal | time}})</small></td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[0].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[1].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[2].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[3].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[4].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[5].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[6].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[7].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[8].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[9].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[10].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[11].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[12].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[13].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[14].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[15].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[16].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[17].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[18].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[19].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[20].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[21].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[22].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[23].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[24].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[25].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[26].timeView}}</td>
+                            <td ng-if="::reportFlat.type=='groupTask'">{{::reportFlat.allWorks[27].timeView}}</td>
+                            <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 28)">{{::reportFlat.allWorks[28].timeView}}</td>
+                            <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 29)">{{::reportFlat.allWorks[29].timeView}}</td>
+                            <td ng-if="::(reportFlat.type=='groupTask' && rpCtrl.daysInMonth > 30)">{{::reportFlat.allWorks[30].timeView}}</td>
+
+                            <td ng-if="::reportFlat.type=='space'"></td>
+                            <td ng-if="::reportFlat.type=='space'" colspan="{{::(rpCtrl.daysInMonth + (rpCtrl.showGroupCollRaportDialog ? 2 : 1))}}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="rpCtrl.createReport()" translate-once="REPORT.SEND_REPORT"></button>
+                <button type="submit" class="btn btn-default" ng-click="rpCtrl.cancelCreateReportDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal m-title="{{'REPORT.REPORT'|translate}}" m-sizes="modal-lg" m-visible="rpCtrl.showDetailReportDialogToggle">
+    <form name="rpCtrl.detailReportForm" class="form-horizontal" autocomplete="off" novalidate>
+        <uib-tabset>
+            <uib-tab>
+                <uib-tab-heading translate-once="REPORT.REPORT_EMAIL"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="sendToEmail" type="text" class="form-control inactive-save" ng-maxlength="400" translate-once-title="REPORT.SEND_TO_EMAIL" translate-once-placeholder="REPORT.SEND_TO_EMAIL" required ng-model="rpCtrl.reportSentToEmail" />
+                        <field-error field="rpCtrl.detailReportForm.sendToEmail" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="REPORT.EMAIL_SUBJECT" translate-once-placeholder="REPORT.EMAIL_SUBJECT" required ng-model="rpCtrl.reportEmailSubject" />
+                        <field-error field="rpCtrl.detailReportForm.emailSubject" />
+                    </div>
+                    <label class="col-sm-3 control-label" style="text-align:left"><i>#{{rpCtrl.reportNumber}}</i></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="REPORT.EMAIL_BODY" translate-once-placeholder="REPORT.EMAIL_BODY" ng-model="rpCtrl.reportEmailBody" />
+                        <field-error field="rpCtrl.detailReportForm.emailBody" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 form-control"><a id="detailreportdownload" target="_blank" href="/api/reportpdf/{{rpCtrl.reportId}}" download="{{'REPORT.REPORT'|translate}} {{rpCtrl.reportNumber}}.pdf">{{'REPORT.ATTACHED_TIME_REPORT'|translate}}, {{'REPORT.REPORT'|translate}} {{rpCtrl.reportNumber}}.pdf</a></div>                        
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="rpCtrl.resendDetailReport()" translate-once="REPORT.SEND_REPORT"></button>
+                <button type="submit" class="btn btn-default" ng-click="rpCtrl.cancelDetailReportDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal m-title="{{'REPORT.DELETE_REPORT'|translate}}" m-visible="rpCtrl.showDeleteReportDialogToggle">
+    <form name="rpCtrl.deleteReportForm" class="form-horizontal" autocomplete="off" novalidate>
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <label class="control-label" style="text-align:left">{{'REPORT.DELETE_REPORT_CONFIRM'|translate}}</label>
+            </div>
+        </div>
+
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="rpCtrl.sendDeleteReport()" translate-once="GENERAL.BUTTONS.YES"></button>
+                <button type="submit" class="btn btn-default" ng-click="rpCtrl.cancelDeleteReportDialog()" translate-once="GENERAL.BUTTONS.NO"></button>
+            </div>
+        </div>
+    </form>
+</modal>

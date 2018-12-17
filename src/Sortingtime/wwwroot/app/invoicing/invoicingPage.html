@@ -1,0 +1,439 @@
+﻿<form name="ivCtrl.form" autocomplete="off" novalidate>
+
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
+            <date-month-select divided-scale="false" ng-model="ivCtrl.dateCursor" update="ivCtrl.updateDateCursor" />
+        </div>
+    </div>
+
+    <div class="row page-menu">
+        <div class="col-md-6 col-sm-7 col-xs-8">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default" ng-class="{ 'active':ivCtrl.sortingTabAvtive }" ng-click="ivCtrl.sortingTabAvtive = true">
+                    <input type="radio" name="options" id="option1" autocomplete="off"> <i class="glyphicon glyphicon-screenshot"></i> {{'INVOICE.SORTING'|translate}}
+                </label>
+                <label class="btn btn-default" ng-class="{ 'active':!ivCtrl.sortingTabAvtive }" ng-click="ivCtrl.sortingTabAvtive = false">
+                    <input type="radio" name="options" id="option2" autocomplete="off"> <i class="glyphicon glyphicon-book"></i> {{'INVOICE.OVERVIEW'|translate}}
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-5 col-xs-4">
+            <div class="pull-right" ng-if="ivCtrl.sortingTabAvtive">
+                <button type="submit" class="btn btn-default btn-primary" ng-disabled="!ivCtrl.sorting || ivCtrl.emptySorting" ng-click="ivCtrl.showCreateInvoiceDialog()">{{'INVOICE.CREATE_INVOICE'|translate}} <span class="badge" ng-if="ivCtrl.sorting.selectedTotalPrice">{{ivCtrl.sorting.selectedTotalPrice | currency}}</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="ivCtrl.sortingTabAvtive">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 20px" />
+                        <col style="width: 25%" />
+                        <col style="width: auto" />
+                        <col style="width: 15%" />
+                        <col style="width: 15%" />
+                        <col style="width: 15%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th colspan="2" translate-once="INVOICE.GROUP"></th>
+                            <th translate-once="INVOICE.TASK"></th>
+                            <th class="text-right">{{'INVOICE.TIME'|translate}} <span class="badge" ng-if="ivCtrl.sorting.totalTime">{{ivCtrl.sorting.totalTime | time}}</span></th>
+                            <th class="text-right" translate-once="INVOICE.HOURPRICE"></th>
+                            <th class="text-right">{{'INVOICE.PRICE'|translate}} <span class="badge" ng-if="ivCtrl.sorting.subTotalPrice">{{ivCtrl.sorting.subTotalPrice | currency}}</span></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td ng-if="ivCtrl.emptySorting" colspan="6"><i translate-once="INVOICE.NO_TIME_REGISTERED"></i></td>
+                    </tr>
+                    <tr ng-if="!ivCtrl.emptySorting" ng-repeat-start="groupTask in ivCtrl.sorting.groupTasks" class="table-select" ng-click="ivCtrl.toggleSelectTask($event, groupTask)" translate-once-title="INVOICE.SELECT_TASK">
+                        <td ng-if="::groupTask.group" colspan="2" class="{{groupTask.selected ? 'selected' : ''}}" ng-click="ivCtrl.toggleSelectGroup($event, groupTask)" translate-once-title="INVOICE.SELECT_GROUP">{{::groupTask.group}}</td>
+                        <td ng-if="::!groupTask.group" colspan="2" class="{{groupTask.selected ? 'selected' : ''}}">{{::groupTask.group}}</td>
+                        <td class="{{groupTask.selected ? 'selected' : ''}}">{{::groupTask.task}}</td>
+                        <td class="text-right {{groupTask.selected ? 'selected' : ''}}">{{ivCtrl.showGroupTaskTotals ? (groupTask.time | time) : ''}}</td>
+                        <td class="text-right {{groupTask.selected ? 'selected' : ''}}"></td>
+                        <td class="text-right {{groupTask.selected ? 'selected' : ''}}">{{ivCtrl.showGroupTaskTotals ? (groupTask.price | currency) : ''}}</td>
+                    </tr>
+                    <tr class="sub-table table-invoice sub-table-select">
+                        <th ng-if="::groupTask.group" class="{{groupTask.selected ? 'selected' : ''}}" ng-click="ivCtrl.toggleSelectGroup($event, groupTask)" translate-once-title="INVOICE.SELECT_GROUP"></th>
+                        <th ng-if="::!groupTask.group" class="{{groupTask.selected ? 'selected' : ''}}" ng-click="ivCtrl.toggleSelectTask($event, groupTask)" translate-once-title="INVOICE.SELECT_TASK"></th>
+                        <th colspan="2" translate-once="INVOICE.PERSON"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr ng-if="!ivCtrl.emptySorting" ng-repeat="user in groupTask.users" ng-form="userForm" class="sub-table table-invoice sub-table-select" ng-click="ivCtrl.toggleSelectUser($event, user, groupTask)" translate-once-title="INVOICE.SELECT_USER">
+                        <td ng-if="::groupTask.group" class="{{groupTask.selected ? 'selected' : ''}}" ng-click="ivCtrl.toggleSelectGroup($event, groupTask)" translate-once-title="INVOICE.SELECT_GROUP"></td>
+                        <td ng-if="::!groupTask.group" class="{{groupTask.selected ? 'selected' : ''}}" ng-click="ivCtrl.toggleSelectTask($event, groupTask)" translate-once-title="INVOICE.SELECT_TASK"></td>
+                        <td colspan="2" class="{{user.selected ? 'selected' : ''}}"><div class="form-control-static input-sm">{{::user.fullName}}</div></td>
+                        <td class="{{user.selected ? 'selected' : ''}}"><div class="form-control-static input-sm">{{::user.time | time}}</div></td>
+                        <td class="{{user.selected ? 'selected' : ''}} input-sm-insight" style="cursor:default" ng-click="ivCtrl.noSelectUser($event)" title="">
+                            <input name="hourPrice" type="text" class="form-control input-sm text-right" currency-format ng-model="user.hourPrice" active-save="ivCtrl.activeSaveUserHourPrice" active-save-data="{ groupTask: groupTask, user: user, form: userForm }" />
+                            <field-error field="userForm.hourPrice" />
+                        </td>
+                        <td class="{{user.selected ? 'selected' : ''}}"><div class="form-control-static input-sm">{{user.price | currency}}</div></td>
+                    </tr>
+                    <tr ng-if="!ivCtrl.emptySorting" ng-repeat-end class="space-table">
+                        <td colspan="6"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!ivCtrl.sortingTabAvtive">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <colgroup>
+                        <col style="width:15%">
+                        <col style="width:auto">
+                        <col style="width:auto">
+                        <col style="width:auto">
+                        <col style="width:20%">
+                        <col style="width:20%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th translate-once="INVOICE.NUMBER"></th>
+                            <th translate-once="INVOICE.STATE"></th>
+                            <th translate-once="INVOICE.SEND_TO"></th>
+                            <th translate-once="INVOICE.CUSTOMER"></th>                            
+                            <th class="text-right">{{'INVOICE.PRICE'|translate}} <span class="badge" ng-if="ivCtrl.invoiceItems.subTotalPrice">{{ivCtrl.invoiceItems.subTotalPrice | currency}}</span></th>
+                            <th translate-once="INVOICE.DOWNLOAD"></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td ng-if="!ivCtrl.invoiceItems || ivCtrl.invoiceItems.length <= 0" colspan="6"><i translate-once="INVOICE.NO_INVOICES"></i></td>
+                    </tr>
+                    <tr ng-if="ivCtrl.invoiceItems && ivCtrl.invoiceItems.length > 0" ng-repeat="invoiceItem in ivCtrl.invoiceItems" class="table-select" translate-once-title="INVOICE.VIEW_DETAILS">
+                        <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{::invoiceItem.number}}</td>
+                        <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{(invoiceItem.status == 100 ? 'INVOICE.STATE_CREATED' : (invoiceItem.status == 200 ? 'INVOICE.STATE_RESENDING' : (invoiceItem.status == 600 ? 'INVOICE.STATE_RESEND' : 'INVOICE.STATE_SEND')))|translate}}</td>
+                        <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{invoiceItem.toEmail}}</td>
+                        <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{::invoiceItem.customerShort}}</td>
+                        <td class="text-right {{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)">{{::invoiceItem.subTotalPrice | currency}}</td>
+                        <td class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" style="cursor:default"><a class="btn-link" ng-disabled="invoiceItem.status < 500" target="_blank" href="/api/invoicepdf/{{::invoiceItem.id}}" title="" download>{{'INVOICE.INVOICE'|translate}} {{::invoiceItem.number}}.pdf</a></td>
+                    </tr>
+                </table>
+                <div id="invoiceItemMenuContainder">
+                    <div id="invoiceItemMenu" class="table-dropdown" uib-dropdown is-open="ivCtrl.invoiceItemMenuIsOpen">
+                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                            <li role="menuitem"><a ng-click="ivCtrl.showDetailInvoiceItem($event)" translate-once="INVOICE.RESEND_INVOICE"></a></li>
+                            <li role="menuitem"><a ng-click="ivCtrl.showCreateCreditNotaDialog($event)" translate-once="INVOICE.CREDIT_NOTE"></a></li>
+                            <li class="divider"></li>
+                            <li role="menuitem"><a ng-click="ivCtrl.showDeleteInvoiceDialog($event)" translate-once="INVOICE.DELETE_INVOICE"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<modal m-title="{{'INVOICE.NEW_INVOICE'|translate}}" m-sizes="modal-lg" m-visible="ivCtrl.showCreateInvoiceDialogToggle">
+    <form name="ivCtrl.createInvoiceForm" class="form-horizontal" autocomplete="off" novalidate>
+        <uib-tabset active="ivCtrl.createInvoiceTabAvtive">
+            <uib-tab>
+                <uib-tab-heading translate-once="INVOICE.INVOICE_EMAIL"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="sendToEmail" type="text" class="form-control inactive-save" ng-maxlength="400" translate-once-title="INVOICE.SEND_TO_EMAIL" translate-once-placeholder="INVOICE.SEND_TO_EMAIL" required ng-model="ivCtrl.invoiceSentToEmail" />
+                        <field-error field="ivCtrl.createInvoiceForm.sendToEmail" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="INVOICE.EMAIL_SUBJECT" translate-once-placeholder="INVOICE.EMAIL_SUBJECT" required ng-model="ivCtrl.invoiceEmailSubject" />
+                        <field-error field="ivCtrl.createInvoiceForm.emailSubject" />
+                    </div>
+                    <label class="col-sm-3 control-label" style="text-align:left"><i>#{{'INVOICE.INVOICE_NUMBER_ADDED'|translate}}</i></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="INVOICE.EMAIL_BODY" translate-once-placeholder="INVOICE.EMAIL_BODY" ng-model="ivCtrl.invoiceEmailBody" />
+                        <field-error field="ivCtrl.createInvoiceForm.emailBody" />
+                    </div>
+                </div>
+            </uib-tab>
+
+            <uib-tab>
+                <uib-tab-heading translate-once="INVOICE.ATTACHED_PDF_INVOICE"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-3 hidden-xs">
+                        <logo-file ng-model="ivCtrl.organizationLogo" />
+                    </div>
+                    <div class="col-sm-6">
+                        <div>
+                            <input name="invoiceTitle" type="text" class="form-control inactive-save title" ng-maxlength="200" translate-once-title="INVOICE.INVOICE_TITLE" translate-once-placeholder="INVOICE.INVOICE_TITLE" ng-model="ivCtrl.invoiceTitle" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoiceTitle" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="space-top visible-xs"></div>
+                        <div>
+                            <input name="invoiceOrganisation" type="text" class="form-control" ng-maxlength="200" translate-once-title="INVOICE.YOUR_ORGANISATION" translate-once-placeholder="INVOICE.YOUR_ORGANISATION" ng-model="ivCtrl.currentOrganization.name" active-save="ivCtrl.activeSaveOrganizationName" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoiceOrganisation" />
+                        </div>
+                        <div class="space-small-top">
+                            <textarea name="invoiceAddress" type="text" class="form-control" rows="4" ng-maxlength="400" translate-once-title="INVOICE.YOUR_ORGANISATION_ADDRESS" translate-once-placeholder="INVOICE.YOUR_ORGANISATION_ADDRESS" ng-model="ivCtrl.currentOrganization.address" active-save="ivCtrl.activeSaveOrganizationAddress" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoiceAddress" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 hidden-xs">
+                        <div>
+                            <textarea name="invoiceCustomer" type="text" class="form-control inactive-save" rows="6" ng-maxlength="400" translate-once-title="INVOICE.TO_CUSTOMER" translate-once-placeholder="INVOICE.TO_CUSTOMER" ng-model="ivCtrl.invoiceCustomer" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoiceCustomer" />
+                        </div>                        
+                    </div>
+                    <div class="col-sm-offset-4 col-sm-5">
+                        <div class="form-group" ng-if="ivCtrl.currentOrganization.vat">
+                            <div class="col-sm-5 col-md-4">
+                                <label for="invoiceVatNumber" class="control-label">{{'INVOICE.VAT_NUMBER'|translate}}:</label>
+                            </div>
+                            <div class="col-sm-7 col-md-8">
+                                <input name="invoiceVatNumber" type="text" class="form-control" ng-maxlength="50" translate-once-title="INVOICE.VAT_NUMBER" ng-model="ivCtrl.currentOrganization.vatNumber" active-save="ivCtrl.activeSaveOrganizationVatNumber" />
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceVatNumber" />
+                            </div>
+                        </div>
+                        <div class="space-small-top" ng-if="ivCtrl.currentOrganization.vat"></div>
+                        <div>
+                            <textarea name="invoicePaymentDetails" type="text" class="form-control" rows="3" ng-maxlength="400" translate-once-title="INVOICE.PAYMENT_DETAILS" translate-once-placeholder="INVOICE.PAYMENT_DETAILS_LONG" ng-model="ivCtrl.currentOrganization.paymentDetails" active-save="ivCtrl.activeSaveOrganizationPaymentDetails" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoicePaymentDetails" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3 visible-xs">
+                        <div class="space-top">
+                            <textarea name="invoiceCustomer" type="text" class="form-control inactive-save" rows="6" ng-maxlength="400" translate-once-title="INVOICE.TO_CUSTOMER" translate-once-placeholder="INVOICE.TO_CUSTOMER" ng-model="ivCtrl.invoiceCustomer" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoiceCustomer" />
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border-top: 1px solid #5f9ea0" />
+
+                <div class="form-group">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="col-sm-5 col-md-4">
+                                <label class="control-label">{{'INVOICE.INVOICE_NUMBER'|translate}}:</label>
+                            </div>
+                            <div class="col-sm-7 col-md-8">
+                                <div class="form-control-static"><i translate-once="INVOICE.INVOICE_NUMBER_ADDED"></i></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5 col-md-4">
+                                <label for="invoiceDate" class="control-label">{{'INVOICE.INVOICE_DATE'|translate}}:</label>
+                            </div>
+                            <div class="col-sm-7 col-md-8">
+                                <datepicker ng-model="ivCtrl.invoiceDate">
+                                    <input name="invoiceDate" type="text" class="form-control inactive-save" date-format translate-once-title="INVOICE.INVOICE_DATE" required ng-model="ivCtrl.invoiceDate" />
+                                </datepicker>
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceDate" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5 col-md-4">
+                                <label for="invoiceYourReference" class="control-label">{{'INVOICE.REFERENCE'|translate}}:</label>
+                            </div>
+                            <div class="col-sm-7 col-md-8">
+                                <input name="invoiceReference" type="text" class="form-control inactive-save" ng-maxlength="100" translate-once-title="INVOICE.REFERENCE" translate-once-placeholder="INVOICE.REFERENCE_LONG" ng-model="ivCtrl.invoiceReference" />
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceReference" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-6">
+                        <div class="space-small-top">
+                            <textarea name="invoicePaymentTerms" type="text" class="form-control inactive-save" rows="3" ng-maxlength="400" translate-once-title="INVOICE.PAYMENT_TERMS" translate-once-placeholder="INVOICE.PAYMENT_TERMS_LONG" ng-model="ivCtrl.invoicePaymentTerms" />
+                            <field-error field="ivCtrl.createInvoiceForm.invoicePaymentTerms" />
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="invoiceText" type="text" class="form-control inactive-save" rows="3" ng-maxlength="4000" translate-once-title="INVOICE.INVOICE_TEXT" translate-once-placeholder="INVOICE.INVOICE_TEXT" ng-model="ivCtrl.invoiceText" />
+                        <field-error field="ivCtrl.createInvoiceForm.invoiceText" />
+                    </div>
+                </div>
+
+                <div style="overflow:auto">
+                    <table class="table" style="min-width: 550px">
+                        <colgroup>
+                            <col style="width: 20px" />
+                            <col ng-if="ivCtrl.showGroupCollInvoiceDialog" style="width: 25%" />
+                            <col style="width: auto" />
+                            <col style="width: 15%" />
+                            <col style="width: 15%" />
+                            <col style="width: 15%" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th ng-if="ivCtrl.showGroupCollInvoiceDialog" colspan="2" translate-once="INVOICE.GROUP"></th>
+                                <th colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 1 : 2)}}" translate-once="INVOICE.TASK"></th>
+                                <th class="text-right" translate-once="INVOICE.TIME"></th>
+                                <th class="text-right" translate-once="INVOICE.HOURPRICE"></th>
+                                <th class="text-right" translate-once="INVOICE.PRICE"></th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat-start="groupTask in ivCtrl.sorting.selected.groupTasks">
+                            <td ng-if="ivCtrl.showGroupCollInvoiceDialog" colspan="2">{{groupTask.group}}</td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 1 : 2)}}">{{groupTask.task}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="sub-table table-invoice">
+                            <th></th>
+                            <th colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 2 : 1)}}" translate-once="INVOICE.PERSON"></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr ng-if="!ivCtrl.emptySorting" ng-repeat="user in groupTask.usersSelected" ng-form="createInvoiceUserForm" class="sub-table table-invoice">
+                            <td></td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 2 : 1)}}"><div class="form-control-static input-sm">{{user.fullName}}</div></td>
+                            <td class="input-sm-insight">
+                                <input name="time" type="text" class="form-control input-sm inactive-save text-right" time-format ng-model="user.time" ng-change="ivCtrl.createInvoicePriceUpdate($event, createInvoiceUserForm, user)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }" />
+                                <field-error field="createInvoiceUserForm.time" />
+                            </td>
+                            <td class="input-sm-insight">
+                                <input name="hourPrice" type="text" class="form-control input-sm inactive-save text-right" currency-format ng-model="user.hourPrice" ng-change="ivCtrl.createInvoicePriceUpdate($event, createInvoiceUserForm, user)" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }" />
+                                <field-error field="createInvoiceUserForm.hourPrice" />
+                            </td>
+                            <td><div class="form-control-static input-sm">{{user.price | currency}}</div></td>
+                        </tr>
+                        <tr ng-repeat-end class="space-table">
+                            <td colspan="6"></td>
+                        </tr>
+                        <tr class="space-table">
+                            <td colspan="6"></td>
+                        </tr>
+
+                        <tr class="table-sum">
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 3 : 2)}}" class="space visible-sm visible-xs"></td>
+                            <td colspan="2" class="visible-sm visible-xs" translate-once="INVOICE.SUBTOTAL"></td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 4 : 3)}}" class="space hidden-sm hidden-xs"></td>
+                            <td class="hidden-sm hidden-xs" translate-once="INVOICE.SUBTOTAL"></td>
+                            <td class="text-right">{{ivCtrl.sorting.selected.subTotalPrice | currency}}</td>
+                        </tr>
+                        <tr ng-if="ivCtrl.currentOrganization.tax" class="table-sum">
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 3 : 2)}}" class="space visible-sm visible-xs"></td>
+                            <td colspan="2" class="form-inline visible-sm visible-xs">
+                                <span class="form-control-static input-sm" translate-once="INVOICE.TAX"></span>
+                                (<input name="invoiceTaxPercentage1" type="text" style="width: 50%" class="form-control input-sm text-right" percentage-format min="0" translate-once-title="INVOICE.TAX"  ng-model="ivCtrl.currentOrganization.taxPercentage" active-save="ivCtrl.activeSaveOrganizationTaxPercentage" />)
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceTaxPercentage1" />
+                            </td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 4 : 3)}}" class="space hidden-sm hidden-xs"></td>
+                            <td class="form-inline hidden-sm hidden-xs">
+                                <span class="form-control-static input-sm" translate-once="INVOICE.TAX"></span>
+                                (<input name="invoiceTaxPercentage2" type="text" style="width: 50%" class="form-control input-sm text-right" percentage-format min="0" translate-once-title="INVOICE.TAX" ng-model="ivCtrl.currentOrganization.taxPercentage" active-save="ivCtrl.activeSaveOrganizationTaxPercentage" />)
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceTaxPercentage2" />
+                            </td>
+                            <td class="text-right">{{ivCtrl.sorting.selected.taxPrice | currency}}</td>
+                        </tr>
+                        <tr ng-if="ivCtrl.currentOrganization.vat" class="table-sum">
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 3 : 2)}}" class="space visible-sm visible-xs"></td>
+                            <td colspan="2" class="form-inline visible-sm visible-xs">
+                                <span class="form-control-static input-sm" translate-once="INVOICE.VAT"></span>
+                                (<input name="invoiceVatPercentage1" type="text" style="width: 50%" class="form-control input-sm text-right" percentage-format min="0" translate-once-title="INVOICE.VAT" ng-model="ivCtrl.currentOrganization.vatPercentage" active-save="ivCtrl.activeSaveOrganizationVatPercentage" />)
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceVatPercentage1" />
+                            </td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 4 : 3)}}" class="space hidden-sm hidden-xs"></td>
+                            <td class="form-inline hidden-sm hidden-xs">
+                                <span class="form-control-static input-sm" translate-once="INVOICE.VAT"></span>
+                                (<input name="invoiceVatPercentage2" type="text" style="width: 50%" class="form-control input-sm text-right" percentage-format min="0" translate-once-title="INVOICE.VAT" ng-model="ivCtrl.currentOrganization.vatPercentage" active-save="ivCtrl.activeSaveOrganizationVatPercentage" />)
+                                <field-error field="ivCtrl.createInvoiceForm.invoiceVatPercentage2" />
+                            </td>
+                            <td class="text-right">{{ivCtrl.sorting.selected.vatPrice | currency}}</td>
+                        </tr>
+                        <tr class="table-sum">
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 3 : 2)}}" class="space visible-sm visible-xs"></td>
+                            <td colspan="2" class="total visible-sm visible-xs" translate-once="INVOICE.TIME"></td>
+                            <td colspan="{{(ivCtrl.showGroupCollInvoiceDialog ? 4 : 3)}}" class="space hidden-sm hidden-xs"></td>
+                            <td class="total hidden-sm hidden-xs" translate-once="INVOICE.TIME"></td>
+                            <td class="text-right total">{{ivCtrl.sorting.selected.totalPrice | currency}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="ivCtrl.createInvoice()" translate-once="INVOICE.SEND_INVOICE"></button>
+                <button type="submit" class="btn btn-default" ng-click="ivCtrl.cancelCreateInvoiceDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal m-title="{{'INVOICE.INVOICE'|translate}}" m-sizes="modal-lg" m-visible="ivCtrl.showDetailInvoiceDialogToggle">
+    <form name="ivCtrl.detailInvoiceForm" class="form-horizontal" autocomplete="off" novalidate>
+        <uib-tabset>
+            <uib-tab>
+                <uib-tab-heading translate-once="INVOICE.INVOICE_EMAIL"></uib-tab-heading>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="sendToEmail" type="text" class="form-control inactive-save" ng-maxlength="400" translate-once-title="INVOICE.SEND_TO_EMAIL" translate-once-placeholder="INVOICE.SEND_TO_EMAIL" required ng-model="ivCtrl.invoiceSentToEmail" />
+                        <field-error field="ivCtrl.detailInvoiceForm.sendToEmail" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="INVOICE.EMAIL_SUBJECT" translate-once-placeholder="INVOICE.EMAIL_SUBJECT" required ng-model="ivCtrl.invoiceEmailSubject" />
+                        <field-error field="ivCtrl.detailInvoiceForm.emailSubject" />
+                    </div>
+                    <label class="col-sm-3 control-label" style="text-align:left"><i>#{{ivCtrl.invoiceNumber}}</i></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="INVOICE.EMAIL_BODY" translate-once-placeholder="INVOICE.EMAIL_BODY" ng-model="ivCtrl.invoiceEmailBody" />
+                        <field-error field="ivCtrl.detailInvoiceForm.emailBody" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 form-control"><a id="detailinvoicedownload" target="_blank" href="/api/invoicepdf/{{ivCtrl.invoiceId}}" download="{{'INVOICE.INVOICE'|translate}} {{ivCtrl.invoiceNumber}}.pdf">{{'INVOICE.ATTACHED_INVOICE'|translate}}, {{'INVOICE.INVOICE'|translate}} {{ivCtrl.invoiceNumber}}.pdf</a></div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="ivCtrl.resendDetailInvoice()" translate-once="INVOICE.SEND_INVOICE"></button>
+                <button type="submit" class="btn btn-default" ng-click="ivCtrl.cancelDetailInvoiceDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal m-title="{{'INVOICE.DELETE_INVOICE'|translate}}" m-visible="ivCtrl.showDeleteInvoiceDialogToggle">
+    <form name="ivCtrl.deleteInvoiceForm" class="form-horizontal" autocomplete="off" novalidate>
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <label class="control-label" style="text-align:left">{{'INVOICE.DELETE_INVOICE_CONFIRM'|translate}}</label>
+            </div>
+        </div>
+
+        <div class="form-group form-group-button">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="ivCtrl.sendDeleteInvoice()" translate-once="GENERAL.BUTTONS.YES"></button>
+                <button type="submit" class="btn btn-default" ng-click="ivCtrl.cancelDeleteInvoiceDialog()" translate-once="GENERAL.BUTTONS.NO"></button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Oprettet af Microsoft Visio, SVG-eksport Tegninger.svg Side-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		width="3.36654in" height="1.83753in" viewBox="0 0 242.391 132.302" xml:space="preserve" color-interpolation-filters="sRGB"
+		class="st12">
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:none;stroke:#c9c9c9;stroke-width:1}
+		.st2 {fill:none;stroke:#000000;stroke-width:1}
+		.st3 {stroke:#000000;stroke-width:1}
+		.st4 {stroke:#c9c9c9;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st5 {stroke:#538135;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st6 {stroke:#c55a11;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st7 {stroke:#305497;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st8 {fill:none;stroke:#a8d08d;stroke-width:1}
+		.st9 {fill:none;stroke:#90aadb;stroke-width:1}
+		.st10 {fill:none;stroke:#f4b183;stroke-width:1}
+		.st11 {stroke:#000000;stroke-dasharray:1,2;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st12 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g>
+		<title>Side-1</title>
+		<g id="shape1-1" transform="translate(59.6534,-1)">
+			<title>Rektangel</title>
+			<rect x="0" y="2" width="129.251" height="130.302" class="st1"/>
+		</g>
+		<g id="group14-3" transform="translate(9.50393,-88.874)">
+			<title>Ark.14</title>
+			<g id="shape2-4">
+				<title>Ark.2</title>
+				<rect x="0" y="106.79" width="24.4035" height="25.5118" class="st2"/>
+			</g>
+			<g id="shape3-6" transform="translate(6.53248,-8.78738)">
+				<title>Cirkel</title>
+				<path d="M0 126.63 A5.66929 5.66929 0 1 1 11.34 126.63 A5.66929 5.66929 0 0 1 0 126.63 Z" class="st2"/>
+			</g>
+			<g id="shape8-8" transform="translate(13.7367,-0.340131)">
+				<title>Ark.8</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+			<g id="shape9-11" transform="translate(10.3578,-0.340131) scale(-1,1)">
+				<title>Ark.9</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+		</g>
+		<g id="group15-14" transform="translate(1,-25.0945)">
+			<title>Ark.15</title>
+			<g id="shape16-15">
+				<title>Ark.16</title>
+				<rect x="0" y="106.79" width="24.4035" height="25.5118" class="st2"/>
+			</g>
+			<g id="shape17-17" transform="translate(6.53248,-8.78738)">
+				<title>Cirkel</title>
+				<path d="M0 126.63 A5.66929 5.66929 0 1 1 11.34 126.63 A5.66929 5.66929 0 0 1 0 126.63 Z" class="st2"/>
+			</g>
+			<g id="shape18-19" transform="translate(13.7367,-0.340131)">
+				<title>Ark.18</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+			<g id="shape19-22" transform="translate(10.3578,-0.340131) scale(-1,1)">
+				<title>Ark.19</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+		</g>
+		<g id="group20-25" transform="translate(216.987,-73.2835)">
+			<title>Ark.20</title>
+			<g id="shape21-26">
+				<title>Ark.21</title>
+				<rect x="0" y="106.79" width="24.4035" height="25.5118" class="st2"/>
+			</g>
+			<g id="shape22-28" transform="translate(6.53248,-8.78738)">
+				<title>Cirkel</title>
+				<path d="M0 126.63 A5.66929 5.66929 0 1 1 11.34 126.63 A5.66929 5.66929 0 0 1 0 126.63 Z" class="st2"/>
+			</g>
+			<g id="shape23-30" transform="translate(13.7367,-0.340131)">
+				<title>Ark.23</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+			<g id="shape24-33" transform="translate(10.3578,-0.340131) scale(-1,1)">
+				<title>Ark.24</title>
+				<path d="M0 123.86 L3.71 125.65 L2.04 127.21 L2.49 132.3" class="st3"/>
+			</g>
+		</g>
+		<g id="shape25-36" transform="translate(69.3277,-114.386)">
+			<title>Ark.25</title>
+			<path d="M0 132.3 L62.13 132.3" class="st4"/>
+		</g>
+		<g id="shape26-39" transform="translate(142.178,-114.386)">
+			<title>Ark.26</title>
+			<path d="M0 132.3 L19.25 132.3" class="st4"/>
+		</g>
+		<g id="shape27-42" transform="translate(169.253,-114.386)">
+			<title>Ark.27</title>
+			<path d="M0 132.3 L13.27 132.3" class="st4"/>
+		</g>
+		<g id="shape28-45" transform="translate(123.462,-100.213)">
+			<title>Ark.28</title>
+			<path d="M0 132.3 L49.23 132.3" class="st5"/>
+		</g>
+		<g id="shape29-48" transform="translate(75.673,-100.213)">
+			<title>Ark.29</title>
+			<path d="M0 132.3 L39.6 132.3" class="st5"/>
+		</g>
+		<g id="shape30-51" transform="translate(70.04,-89.4918)">
+			<title>Ark.30</title>
+			<path d="M0 132.3 L46.52 132.3" class="st5"/>
+		</g>
+		<g id="shape31-54" transform="translate(126.37,-90.0369)">
+			<title>Ark.31</title>
+			<path d="M0 132.3 L28.53 132.3" class="st5"/>
+		</g>
+		<g id="shape32-57" transform="translate(143.995,-76.954)">
+			<title>Ark.32</title>
+			<path d="M0 132.3 L38.16 132.3" class="st4"/>
+		</g>
+		<g id="shape33-60" transform="translate(66.951,-76.954)">
+			<title>Ark.33</title>
+			<path d="M0 132.3 L70.87 132.3" class="st4"/>
+		</g>
+		<g id="shape34-63" transform="translate(95.115,-62.418)">
+			<title>Ark.34</title>
+			<path d="M0 132.3 L46.52 132.3" class="st6"/>
+		</g>
+		<g id="shape35-66" transform="translate(154.934,-62.599)">
+			<title>Ark.35</title>
+			<path d="M0 132.3 L19.25 132.3" class="st6"/>
+		</g>
+		<g id="shape36-69" transform="translate(68.0413,-52.6051)">
+			<title>Ark.36</title>
+			<path d="M0 132.3 L37.07 132.3" class="st6"/>
+		</g>
+		<g id="shape37-72" transform="translate(113.832,-52.2417)">
+			<title>Ark.37</title>
+			<path d="M0 132.3 L28.53 132.3" class="st6"/>
+		</g>
+		<g id="shape38-75" transform="translate(150.508,-52.0599)">
+			<title>Ark.38</title>
+			<path d="M0 132.3 L29.83 132.3" class="st6"/>
+		</g>
+		<g id="shape39-78" transform="translate(78.3986,-39.8855)">
+			<title>Ark.39</title>
+			<path d="M0 132.3 L49.23 132.3" class="st7"/>
+		</g>
+		<g id="shape40-81" transform="translate(140.543,-39.8855)">
+			<title>Ark.40</title>
+			<path d="M0 132.3 L28.89 132.3" class="st7"/>
+		</g>
+		<g id="shape41-84" transform="translate(75.673,-30.8001)">
+			<title>Ark.41</title>
+			<path d="M0 132.3 L38.16 132.3" class="st7"/>
+		</g>
+		<g id="shape42-87" transform="translate(123.644,-30.8001)">
+			<title>Ark.42</title>
+			<path d="M0 132.3 L11.45 132.3" class="st7"/>
+		</g>
+		<g id="shape43-90" transform="translate(143.268,-30.8001)">
+			<title>Ark.43</title>
+			<path d="M0 132.3 L11.45 132.3" class="st7"/>
+		</g>
+		<g id="shape44-93" transform="translate(66.951,-15.1732)">
+			<title>Ark.44</title>
+			<path d="M0 132.3 L57.78 132.3" class="st4"/>
+		</g>
+		<g id="shape45-96" transform="translate(135.092,-15.1732)">
+			<title>Ark.45</title>
+			<path d="M0 132.3 L28.35 132.3" class="st4"/>
+		</g>
+		<g id="shape46-99" transform="translate(66.137,-83.7716)">
+			<title>Rektangel.46</title>
+			<rect x="0" y="109.52" width="111.474" height="22.7825" class="st8"/>
+		</g>
+		<g id="shape47-101" transform="translate(71.312,-25.0945)">
+			<title>Rektangel.47</title>
+			<rect x="0" y="112.743" width="105.161" height="19.559" class="st9"/>
+		</g>
+		<g id="shape48-103" transform="translate(64.2254,-47.4882)">
+			<title>Rektangel.48</title>
+			<rect x="0" y="111.893" width="120.472" height="20.4094" class="st10"/>
+		</g>
+		<g id="shape52-105" transform="translate(3.6407,173.102) rotate(-153.435)">
+			<title>Ark.52</title>
+			<path d="M0 132.3 L28.52 132.3" class="st11"/>
+		</g>
+		<g id="shape53-108" transform="translate(48.1977,167.835) rotate(-173.66)">
+			<title>Ark.53</title>
+			<path d="M0 132.3 L25.67 132.3" class="st11"/>
+		</g>
+		<g id="shape54-111" transform="translate(93.1105,146.702) rotate(166.759)">
+			<title>Ark.54</title>
+			<path d="M0 132.3 L24.75 132.3" class="st11"/>
+		</g>
+		<g id="shape55-114" transform="translate(57.2866,229.227) rotate(-175.764)">
+			<title>Ark.55</title>
+			<path d="M0 132.3 L38.37 132.3" class="st11"/>
+		</g>
+		<g id="shape56-117" transform="translate(104.855,199.568) rotate(160.821)">
+			<title>Ark.56</title>
+			<path d="M0 132.3 L34.51 132.3" class="st11"/>
+		</g>
+		<g id="shape57-120" transform="translate(178.233,173.903) rotate(-164.745)">
+			<title>Ark.57</title>
+			<path d="M0 132.3 L32.32 132.3" class="st11"/>
+		</g>
+		<g id="shape58-123" transform="translate(289.387,161.404) rotate(144.758)">
+			<title>Ark.58</title>
+			<path d="M0 132.3 L31.93 132.3" class="st11"/>
+		</g>
+	</g>
+</svg>

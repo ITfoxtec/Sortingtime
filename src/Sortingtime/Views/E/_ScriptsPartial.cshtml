@@ -1,0 +1,14 @@
+﻿<environment names="Development">
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/app/app-start.js"></script>
+    <script src="~/applib/layout/nav-controller.js"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+    <script src="~/lib/angular/angular.min.js" asp-append-version="true"></script>
+    <script src="~/app/app-start.js" asp-append-version="true"></script>
+    <script src="~/app/app-start.min.js" asp-append-version="true"></script>
+</environment>

@@ -1,0 +1,22 @@
+﻿
+Package Manager Console:
+
+	cd C:\SourceOnline\SortingtimeGit\Main\Sortingtime\src\Sortingtime.SqlMigrations
+
+	dotnet ef migrations add InitialDatabase
+	dotnet ef migrations add Update1
+
+	dotnet ef database update
+
+
+Framgangsmåde:
+	1a) Kopierer nyeste model til Sortingtime.SqlMigrations projektet
+		1b) Slet ApplicationConfigDbContext.cs
+		1c) Tilføj metoden til ApplicationDbContext.cs
+			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+			{
+				optionsBuilder.UseSqlServer(Startup.Configuration.GetConnectionString("DefaultConnection"));
+				base.OnConfiguring(optionsBuilder);
+			}
+	2) Udfør ovenstående komandoer
+	3) SQL opdateres i sortingtime_migrations databasen og flyttes herfra med SqlDatabase til sortingtime databasen

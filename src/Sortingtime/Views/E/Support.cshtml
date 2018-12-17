@@ -1,0 +1,55 @@
+﻿@model Sortingtime.ViewModels.SupportViewModel
+
+@{
+    ViewBag.Title = @Html.Trans("SUPPORT.SUPPORT");
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        @using (Html.BeginForm("Support", "E", Html.RouteCulture(), FormMethod.Post, true, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h3>@ViewBag.Title</h3>
+
+            <p>
+                @Html.Trans("SUPPORT.TOP_TEXT")
+            </p><br />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FullName, Html.Trans("SUPPORT.YOUR_FULL_NAME"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, Html.Trans("SUPPORT.YOUR_EMAIL"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Message, Html.Trans("SUPPORT.MESSAGE"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control", style = "height: 300px;" })
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group form-group-button">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("SUPPORT.SEND_MESSAGE")" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

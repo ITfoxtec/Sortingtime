@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html lang="@(Html.CultureName())">
+<head>
+    <meta charset="utf-8" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="Sortingtime">
+    <meta description="@Html.Trans("LAYOUT.META_DESCRIPTION")" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sortingtime</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/ui/css/main.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/ui/css/main.min.css" asp-append-version="true" />
+    </environment>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="body-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    </environment>
+</body>
+</html>

@@ -1,0 +1,188 @@
+﻿@using System.Security.Principal
+<!DOCTYPE html>
+<html ng-app="app" lang="@(Html.CultureName())">
+<head>
+    <meta charset="utf-8" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="Sortingtime">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <meta description="@Html.Trans("LAYOUT.META_DESCRIPTION")" />
+    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/ui/images/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" href="https://sortingtime.com/?culture=da-dk" hreflang="da-dk" />
+    <link rel="alternate" href="https://sortingtime.com/?culture=en-us" hreflang="en-us" />
+    <link rel="alternate" href="https://sortingtime.com/?culture=en-gb" hreflang="en-gb" />
+    <link rel="alternate" href="https://sortingtime.com/?culture=en" hreflang="en" />
+    <link rel="alternate" href="https://sortingtime.com/?culture=da" hreflang="da" />
+    <link rel="alternate" href="https://sortingtime.com/" hreflang="x-default" />
+    <title>Sortingtime</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/ui/css/main.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/ui/css/main.min.css" asp-append-version="true" />
+    </environment>
+    @*
+        Cache er disablet i AngularJS og siderne loades hver gang, derfor giver det ikke noget at lave preload.
+    <link rel="preload" href="~/app/time/timePage.html" asp-append-version="true" />
+    <link rel="preload" href="~/app/reporting/reportingPage.html" />
+    <link rel="preload" href="~/app/invoicing/invoicingPage.html" />
+    <link rel="preload" href="~/app/config/configPage.html" />
+    <link rel="preload" href="~/ui/template/messagesScriptTemplate.html" />
+    <link rel="preload" href="~/ui/template/datepicker/popup.html" />*@
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>   
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav ng-controller="navController as navCtrl" class="navbar navbar-default">
+            <div class="@(ViewBag.SinglePage != null && ViewBag.SinglePage ? "container-fluid" : "container")">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" ng-click="navCtrl.isCollapsed = !navCtrl.isCollapsed">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="A#/time" class="navbar-brand navbar-brand-xlarge"><span class="brand sorting">Sorting</span><span class="brand time">time</span></a>
+                </div>
+                <div class="navbar-collapse" ng-class="navCtrl.isCollapsed ? 'collapse' : 'in'">
+                    <ul class="nav navbar-nav">
+                        <li><a ng-class="navCtrl.getClass('/time')" href="A#/time">@Html.Trans("LAYOUT.TIME_REGISTRATION")</a></li>
+                        <li><a ng-class="navCtrl.getClass('/reporting')" href="A#/reporting">@Html.Trans("LAYOUT.REPORTING")</a></li>
+                        <li><a ng-class="navCtrl.getClass('/invoicing')" href="A#/invoicing">@Html.Trans("LAYOUT.INVOICING")</a></li>
+                    </ul>
+                    @using (Html.BeginForm("LogOff", "Account", Html.RouteDkCultureForLogout(), FormMethod.Post, true, new { id = "logoutForm", autocomplete = "off", @class = "navbar-right" }))
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a class="navbar-right-last-element" href="javascript:document.getElementById('logoutForm').submit()">@Html.Trans("LAYOUT.LOG_OFF")</a></li>
+                            <li><a href="A#/config" class="navbar-right-last-element glyphicon glyphicon-cog" ng-class="navCtrl.getClass('/config')" title="@Html.Trans("LAYOUT.CONFIG")"></a></li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+    }
+    else
+    {
+        <nav ng-controller="navController as navCtrl" class="navbar navbar-default">
+            <div class="@(ViewBag.SinglePage != null && ViewBag.SinglePage ? "container-fluid" : "container")">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" ng-click="navCtrl.isCollapsed = !navCtrl.isCollapsed">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/@(Context.Request.QueryString)" class="navbar-brand navbar-brand-xxlarge"><span class="brand sorting">Sorting</span><span class="brand time">time</span></a>
+                </div>
+                <div class="navbar-collapse" ng-class="navCtrl.isCollapsed ? 'collapse' : 'in'">
+                    <div class="nav navbar-nav navbar-right">
+                        @if (!(ViewBag.HideMenuLogin == true))
+                        {
+                            <div>
+                                @Html.ActionLink(@Html.Trans("AUTH.LOGIN"), "Login", "Account", Html.RouteCulture()) <span class="gray">@Html.Trans("AUTH.LOGIN_OR")</span> @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP_HEAD"), "Register", "Account", Html.RouteCulture())
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    }
+
+    @RenderSection("topSection", required: false)
+
+    <div class="@(ViewBag.SinglePage != null && ViewBag.SinglePage ? "container-fluid" : "container")">
+        <div class="body-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    @RenderSection("bottomSection", required: false)
+
+    <div class="@(ViewBag.SinglePage != null && ViewBag.SinglePage ? "container-fluid" : "container")">
+        @if (ViewBag.SinglePage != null && ViewBag.SinglePage)
+        {
+            <footer ng-controller="footerController as fooCtrl">
+                <div class="row-fluid">
+                    <div class="col-xs-5 col-sm-4 col-md-3">
+                        <small>&copy; @DateTime.Now.Year - <span class="brand sorting">Sorting</span><span class="brand time">time</span></small>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2">
+                        <small><a ng-click="fooCtrl.showUrlDialog('./A/Terms')">@Html.Trans("LAYOUT.TERMS")</a></small><br />
+                        <small><a ng-click="fooCtrl.showUrlDialog('./A/LicensingTerms')">@Html.Trans("LAYOUT.LICENSING_TERMS")</a></small>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-2">
+                        <small><a ng-click="fooCtrl.showSupport()">@Html.Trans("LAYOUT.SUPPORT")</a></small>
+                    </div>
+                </div>
+
+                <modal m-sizes="{{fooCtrl.size}}" m-visible="fooCtrl.showDialog">
+                    <ng-include src="fooCtrl.url">
+                    </ng-include>
+                </modal>
+            </footer>
+        }
+        else
+        {
+            <footer>
+                <div class="row-fluid">
+                    <div class="col-xs-5 col-sm-4 col-md-3">
+                        <small>&copy; @DateTime.Now.Year - <span class="brand sorting">Sorting</span><span class="brand time">time</span></small>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2">
+                        <small>@Html.ActionLink(@Html.Trans("LAYOUT.TERMS"), "Terms", "E", Html.RouteCulture())</small><br />
+                        <small>@Html.ActionLink(@Html.Trans("LAYOUT.LICENSING_TERMS"), "LicensingTerms", "E", Html.RouteCulture())</small>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-2">
+                        <small>@Html.ActionLink(@Html.Trans("LAYOUT.SUPPORT"), "Support", "E", Html.RouteCulture())</small>
+                    </div>
+                </div>
+            </footer>
+        }
+    </div>
+
+    @if (!Context.Request.Cookies.ContainsKey("acceptCookies"))
+    {
+        <div id="cookie-accept-bar">
+            @Html.Trans("LAYOUT.CP_BAR_TEXT")
+            <button class="btn btn-default" onclick="setAacceptCookie()">@Html.Trans("LAYOUT.CP_BAR_OK")</button>
+            @Html.ActionLink(@Html.Trans("LAYOUT.CP_BAR_LEARN_MORE_HERE"), "CookiePolicy", Html.RouteCulture())
+        </div>
+    }
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        function setAacceptCookie() {
+            days = 2000;
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+            document.cookie = "acceptCookies=true" + expires + "; path=/";
+            jQuery("#cookie-accept-bar").hide();
+        }
+    </script>  
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47722528-4', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>

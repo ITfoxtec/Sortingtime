@@ -1,0 +1,321 @@
+﻿@model Sortingtime.ViewModels.RegisterViewModel
+
+@section topSection {
+<div class="web-page">
+    <div class="jumbo-container-header">
+        <div class="container">
+            <div class="body-content">
+                <div class="jumbo-header">
+                    @if (Html.IsParentCultureName("da"))
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <h1>Bygget til konsulenter</h1> 
+                                <p>
+                                    Sortingtime er et tidsregistreringssystem inspireret af den måde konsulenter arbejder. Registrer tidsforbrug på opgaver, sende timerapporter og sende fakturaer.
+                                </p>
+                            </div>
+                            <div class="hidden-xxs col-xs-12 col-sm-5 col-md-offset-1 col-md-5 col-lg-offset-2 col-lg-4">
+                                @using (Html.BeginForm("Register", "Account", Html.RouteCulture(), FormMethod.Post, true, new { autocomplete = "off", @class = "form-horizontal", role = "form" }))
+                                {
+                                    <div>
+                                        <div class="registration">
+                                            <div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(m => m.FullName, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.FULL_NAME") })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(m => m.Email, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.EMAIL") })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.PasswordFor(m => m.Password, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.CREATE_PASSWORD") })
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("AUTH.SIGN_UP")" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                                        <br />
+                                        <small class="gray">@Html.Trans("AUTH.BY_CREATING_ACCOUNT") @Html.ActionLink(@Html.Trans("AUTH.BY_CREATING_ACCOUNT_LICENSING_TERMS"), "LicensingTerms", "E", Html.RouteCulture())</small>
+                                    </div>
+                                }
+                            </div>
+                            <div class="visible-xxs col-xs-12">
+                                @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })
+                                <br />
+                                <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <h1>Built for consultants</h1>
+                                <p>
+                                    Sortingtime is a time tracking system inspired by the way consultants work. Track time spent on tasks, send time reports, and send invoices.
+                                </p>                                
+                            </div>
+                            <div class="hidden-xxs col-xs-12 col-sm-5 col-md-offset-1 col-md-5 col-lg-offset-2 col-lg-4">                                                                
+                                @using (Html.BeginForm("Register", "Account", Html.RouteCulture(), FormMethod.Post, true, new { autocomplete = "off", @class = "form-horizontal", role = "form" }))
+                                {
+                                    <div>
+                                        <div class="registration">
+                                            <div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(m => m.FullName, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.FULL_NAME") })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.TextBoxFor(m => m.Email, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.EMAIL") })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.PasswordFor(m => m.Password, new { @data_val = "false", @class = "form-control", placeholder = Html.Trans("AUTH.CREATE_PASSWORD") })
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("AUTH.SIGN_UP")" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                                        <br />
+                                        <small class="gray">@Html.Trans("AUTH.BY_CREATING_ACCOUNT") @Html.ActionLink(@Html.Trans("AUTH.BY_CREATING_ACCOUNT_LICENSING_TERMS"), "LicensingTerms", "E", Html.RouteCulture())</small>
+                                    </div>
+                                }
+                            </div>
+                            <div class="visible-xxs col-xs-12">
+                                @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })
+                                <br />
+                                <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+}
+
+@if (Html.IsParentCultureName("da"))
+{
+    <div class="web-page">
+        <div class="page-section">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <div>
+                        <img src="~/ui/images/consultant-team.svg" />
+                        <h3 class="gray">
+                            Sortingtime for firmaer
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                    <h1>En bedre måde at registrerer tid</h1>
+                    <p>
+                        Sortingtime gør det nemt at registrere tid i et lille firma, overskue tidsforbruget og sende fakturaer på det udførte arbejde.
+                    </p>
+                    <p>
+                        @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })
+                        <br />
+                        <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <div class="row">
+                <div class="visible-xs col-xs-12 text-center">
+                    <img src="~/ui/images/task-grouping.svg" />
+                </div>
+                <div class="col-xs-12 col-sm-6 sub-section-space">
+                    <h2>Opgave gruppering</h2>
+                    <p>
+                        Tiden registreres på opgaver, som kan være enkeltstående eller grupperes. Du definerer selv grupperingsniveauet f.eks. projekter eller kunder.
+                    </p>
+                </div>
+                <div class="hidden-xs col-xs-12 col-sm-6 col-md-offset-1 col-md-5 text-center">
+                    <img src="~/ui/images/task-grouping.svg" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-5 text-center">
+                    <img src="~/ui/images/invoicing.svg" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-offset-1 sub-section-space">
+                    <h2>Fakturering</h2>
+                    <p>
+                        Let at sende 10 perfekte PDF fakturaer til 10 forskellige kunder på få minutter.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="page-section">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <div>
+                        <img src="~/ui/images/demo.svg" />
+                        <h3 class="gray">
+                            Prøv Sortingtime
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                    <h1>Demo?</h1>
+                    <p>
+                        Prøv Sortingtime med en demo konto, som er pre konfigureret med demo data.
+                    </p>
+                    <p>
+                        @using (Html.BeginForm("Demo", "Account", Html.RouteCulture(), FormMethod.Post, true, null))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn btn-default btn-primary" value="Prøv Sortingtime demo" />
+                        }
+                        <small class="gray">Dine demo data slettes automatisk bagefter.</small>
+                    </p>
+                </div>
+            </div>
+        </div>*@
+    </div>
+}
+else
+{
+    <div class="web-page">
+        <div class="page-section">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <div>
+                        <img src="~/ui/images/consultant-team.svg" />
+                        <h3 class="gray">
+                            Sortingtime for businesses
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                    <h1>A better way to track time</h1>
+                    <p>
+                        Sortingtime makes it easy to track time in a small business, overview the time spent, and send invoices of the work done.
+                    </p>
+                    <p>
+                        @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })
+                        <br />
+                        <small>@Html.Trans("AUTH.SIGN_UP_TEXT")</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <div class="row">
+                <div class="visible-xs col-xs-12 text-center">
+                    <img src="~/ui/images/task-grouping.svg" />
+                </div>
+                <div class="col-xs-12 col-sm-6 sub-section-space">
+                    <h2>Task grouping</h2>
+                    <p>
+                        Time is tracked on tasks, which can be single or grouped together. You define the level of grouping e.g. by assignment, project or customer.
+                    </p>
+                </div>
+                <div class="hidden-xs col-xs-12 col-sm-6 col-md-offset-1 col-md-5 text-center">
+                    <img src="~/ui/images/task-grouping.svg" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-5 text-center">
+                    <img src="~/ui/images/invoicing.svg" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-offset-1 sub-section-space">
+                    <h2>Invoicing</h2>
+                    <p>
+                        Easy to send 10 perfect PDF invoices to 10 different customers in minutes. 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="page-section">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <div>
+                        <img src="~/ui/images/demo.svg" />
+                        <h3 class="gray">
+                            Try Sortingtime
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                    <h1>Demo?</h1>
+                    <p>
+                        Try out Sortingtime with a demo account pre configured with demo data.
+                    </p>
+                    <p>
+                        @using (Html.BeginForm("Demo", "Account", Html.RouteCulture(), FormMethod.Post, true, null))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" class="btn btn-default btn-primary" value="Try Sortingtime demo" />
+                        }
+                        <small class="gray">Your demo data is automatically deleted afterwards.</small>
+                    </p>
+                </div>
+            </div>
+        </div>*@
+    </div>
+}
+
+@section bottomSection {
+<div class="web-page">
+    <div class="jumbo-container-line">
+        <div class="container">
+            <div class="body-content">
+                <div class="page-section">
+                    @if (Html.IsParentCultureName("da"))
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                                <h1>Kom godt i gang, Sortingtime er gratis</h1>
+                                <p>
+                                    Opret din Sortingtime konto det er gratis, og gøre dine daglige administrationsopgaver meget lettere.
+                                </p>
+                                <p>
+                                    @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 text-center">
+                                <h1>Get started, Sortingtime is free</h1>
+                                <p>
+                                    Sign up for Sortingtime it is free, and make your daily administration tasks much easier. 
+                                </p>
+                                <p>
+                                    @Html.ActionLink(@Html.Trans("AUTH.SIGN_UP"), "Register", "Account", Html.RouteCulture(), new { @class = "btn btn-default btn-primary" })                                  
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ScriptsPartial"); }
+}

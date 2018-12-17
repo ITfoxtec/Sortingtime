@@ -1,0 +1,65 @@
+﻿@model Sortingtime.ViewModels.RegisterViewModel
+
+@{
+    ViewBag.Title = @Html.Trans("AUTH.SIGN_UP_HEAD");
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-offset-2 col-md-10">
+
+        @using (Html.BeginForm("Register", "Account", Html.RouteCulture(), FormMethod.Post, true, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h3>@ViewBag.Title</h3>            
+            <p>@Html.Trans("AUTH.SIGN_UP_TEXT")</p>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FullName, Html.Trans("AUTH.FULL_NAME"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, Html.Trans("AUTH.EMAIL"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, Html.Trans("AUTH.CREATE_PASSWORD"), new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group form-group-button">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" class="btn btn-default btn-primary" value="@Html.Trans("AUTH.SIGN_UP")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 space-top">
+                    @Html.ActionLink(Html.Trans("AUTH.LOGIN"), "Login", Html.RouteCulture()) @Html.Trans("AUTH.HAVE_ACCOUNT")
+                </div>
+                <div class="col-sm-12">
+                    <small>@Html.Trans("AUTH.BY_CREATING_ACCOUNT") @Html.ActionLink(Html.Trans("AUTH.BY_CREATING_ACCOUNT_LICENSING_TERMS"), "LicensingTerms", "E", Html.RouteCulture()).</small>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ScriptsPartial"); }
+}

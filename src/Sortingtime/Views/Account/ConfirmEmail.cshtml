@@ -1,0 +1,13 @@
+﻿@{
+	ViewBag.Title = @Html.Trans("AUTH.CONFIRM_EMAIL");
+}
+<div class="row">
+    <div class="col-sm-12 col-md-offset-2 col-md-10">
+        <h3>@ViewBag.Title</h3>
+        <p>
+            @Html.Trans("AUTH.CONFIRMING_EMAIL_TEXT") @Html.ActionLink(@Html.Trans("AUTH.CONFIRMING_EMAIL_LINK"), "Login", "Account", Html.RouteCulture())
+        </p>
+    </div>
+</div>
+
+
