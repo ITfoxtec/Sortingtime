@@ -48,7 +48,7 @@ namespace Sortingtime
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddSortingtime();
+            services.AddSortingtime(Configuration);
 
             services.AddSortingtimeAddDataProtection(Configuration);
 

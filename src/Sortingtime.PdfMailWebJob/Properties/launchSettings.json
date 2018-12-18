@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Sortingtime.PdfMailWebJob": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

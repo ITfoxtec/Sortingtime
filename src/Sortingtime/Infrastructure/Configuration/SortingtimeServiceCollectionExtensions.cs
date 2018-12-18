@@ -2,13 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
+using Sortingtime.Infrastructure;
+using Sortingtime.Models;
 
 namespace Sortingtime.Infrastructure.Configuration
 {
     public static class SortingtimeServiceCollectionExtensions
     {
-        public static IServiceCollection AddSortingtime(this IServiceCollection services)
+        public static IServiceCollection AddSortingtime(this IServiceCollection services, IConfiguration configuration)
         {
+            services.BindConfig<MailSettings>(configuration, nameof(MailSettings));
+            
             services.AddSortingtimeLogic();
             services.AddSortingtimeProviders();
 
