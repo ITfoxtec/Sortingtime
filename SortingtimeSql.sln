@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E968D90F-FF8A-419D-984E-265A44DA163A}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Sortingtime.SqlDatabase", "src\Sortingtime.SqlDatabase\Sortingtime.SqlDatabase.sqlproj", "{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9CFC4E16-48D8-4BD6-A61C-367BE9751F66} = {E968D90F-FF8A-419D-984E-265A44DA163A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {479F0095-D8FE-4E18-A237-23AFC99C62EF}
+	EndGlobalSection
+EndGlobal
