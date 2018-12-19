@@ -58,8 +58,7 @@ IF DEFINED CLEAN_LOCAL_DEPLOYMENT_TEMP (
 )
 
 IF NOT DEFINED MSBUILD_PATH (
-  ::SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
-  SET MSBUILD_PATH=%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe
+  SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -73,8 +72,7 @@ call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\Sortingtime.sln"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-:: call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
-%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" /nologo /verbosity:m /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="%DEPLOYMENT_TEMP%";AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release /p:SolutionDir="%DEPLOYMENT_SOURCE%\src"
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
