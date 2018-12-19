@@ -1,5 +1,2 @@
 [config]
-project = src/Sortingtime/Sortingtime.csproj
-
-[config]
 command = deploy.cmd
