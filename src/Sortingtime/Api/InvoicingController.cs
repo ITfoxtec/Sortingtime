@@ -99,7 +99,7 @@ namespace Sortingtime.Api
                 gt.Price = gt.Users.Sum(u => u.Price);
             }
 
-            return Json(invoice);
+            return await Task.FromResult(Json(invoice));
         }
 
         // POST api/values
