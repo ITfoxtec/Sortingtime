@@ -10,9 +10,12 @@
     "inputFiles": [
       "wwwroot/app/**/*.js",
       "!wwwroot/app/app.js",
+      "!wwwroot/app/app.min.js",
       "!wwwroot/app/app-start.js",
+      "!wwwroot/app/app-start.min.js",
       "wwwroot/applib/**/*.js",
-      "!wwwroot/applib/group-task-dropdown-directive.js"
+      "!wwwroot/applib/group-task-dropdown-directive.js",
+      "!wwwroot/applib/group-task-dropdown-directive.min.js"
     ],
     "minify": {
       "enabled": true,
@@ -23,7 +26,9 @@
   {
     "outputFileName": "wwwroot/app/app-start.min.js",
     "inputFiles": [
-      "wwwroot/app/app-start.js"
+      "wwwroot/app/app-start.js",
+      "wwwroot/applib/layout/nav-controller.js",
+      "wwwroot/applib/layout/footer-controller.js"
     ],
     "minify": {
       "enabled": true,
