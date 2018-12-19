@@ -32,9 +32,9 @@ namespace Sortingtime
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")
 #if DEBUG
-                b => b.MigrationsAssembly("Sortingtime")
+                , b => b.MigrationsAssembly("Sortingtime")
 #endif                
                 )); 
 
