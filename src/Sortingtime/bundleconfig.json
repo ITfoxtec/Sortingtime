@@ -1,0 +1,67 @@
+[
+  {
+    "outputFileName": "wwwroot/ui/css/main.min.css",
+    "inputFiles": [
+      "wwwroot/ui/css/main.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/app/app.min.js",
+    "inputFiles": [
+      "wwwroot/app/**/*.js",
+      "!wwwroot/app/app.js",
+      "!wwwroot/app/app-start.js",
+      "wwwroot/applib/**/*.js",
+      "!wwwroot/applib/group-task-dropdown-directive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/app/app-start.min.js",
+    "inputFiles": [
+      "wwwroot/app/app-start.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/lib/angular-translate-once/src/translate-once.min.js",
+    "inputFiles": [
+      "wwwroot/lib/angular-translate-once/src/translate-once.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/lib/async-mutex/mutex.min.js",
+    "inputFiles": [
+      "wwwroot/lib/async-mutex/mutex.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/applib/group-task-dropdown-directive.min.js",
+    "inputFiles": [
+      "wwwroot/applib/group-task-dropdown-directive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
