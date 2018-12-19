@@ -5,6 +5,12 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>7.2</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Description>Sortingtime.PdfMailWebJob</Description>
+    <AssemblyName>Sortingtime.PdfMailWebJob</AssemblyName>
+    <Authors>ITfoxtec</Authors>
+    <Company>ITfoxtec</Company>
+    <Copyright>© 2018 ITfoxtec</Copyright>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
