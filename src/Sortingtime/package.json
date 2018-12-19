@@ -1,6 +1,6 @@
 {
   "name": "Sortingtime",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "devDependencies": {
     "graceful-fs": "4.1.11",
     "gulp": "3.9.1",
