@@ -71,7 +71,8 @@ call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\Sortingtime.sln"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
+:: call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
+%MSBUILD_PATH% "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" /nologo /verbosity:m /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="%DEPLOYMENT_TEMP%";AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release /p:SolutionDir="%DEPLOYMENT_SOURCE%\src"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
