@@ -66,7 +66,6 @@
     <Folder Include="dbo\Views\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Works.sql" />
     <Build Include="dbo\Tables\TimeDefaultGroupTasks.sql" />
     <Build Include="dbo\Tables\ReportSettings.sql" />
     <Build Include="dbo\Tables\Reports.sql" />
@@ -74,7 +73,6 @@
     <Build Include="dbo\Tables\Organizations.sql" />
     <Build Include="dbo\Tables\InvoiceSettings.sql" />
     <Build Include="dbo\Tables\HourPriceSettings.sql" />
-    <Build Include="dbo\Tables\GroupTasks.sql" />
     <Build Include="dbo\Tables\AspNetUserTokens.sql" />
     <Build Include="dbo\Tables\AspNetUsers.sql" />
     <Build Include="dbo\Tables\AspNetUserRoles.sql" />
@@ -86,10 +84,8 @@
     <Build Include="dbo\Tables\Invoices.sql" />
     <Build Include="dbo\Tables\Demos.sql" />
     <Build Include="dbo\Tables\Logs.sql" />
-    <Build Include="dbo\Views\All_test_time.sql" />
     <Build Include="dbo\Views\All_test_report.sql" />
     <Build Include="dbo\Views\All_test_invoice.sql" />
-    <Build Include="dbo\Views\All_by_date_test_time.sql" />
     <Build Include="dbo\Views\All_by_date_test_report.sql" />
     <Build Include="dbo\Views\All_by_date_test_invoice.sql" />
     <Build Include="dbo\Tables\Tasks.sql" />
