@@ -36,9 +36,9 @@ namespace Sortingtime.PdfMailWebJob.Functions
         public async Task SendInvoicePdfAsync(
             [QueueTrigger("sendinvoicepdf")] InvoiceQueue invoiceMessage,
             [Blob("invoice/{InvoiceId}.pdf", FileAccess.Write)] CloudBlockBlob invoicePdfOutput,
-//#if DEBUG
-//            [Blob("invoice/{InvoiceId}.html", FileAccess.Write)] Stream invoiceHtmlOutput,
-//#endif
+#if DEBUG
+            [Blob("invoice/{InvoiceId}.html", FileAccess.Write)] CloudBlockBlob invoiceHtmlOutput,
+#endif
             CancellationToken cancellationToken)
         {
             try
@@ -62,10 +62,10 @@ namespace Sortingtime.PdfMailWebJob.Functions
 
                 using (var pdfInvoiceHtmlStream = await InvoiceHtml.CreateInvoiceStream(translate, invoice, invoiceData, organization?.Logo, organization?.Name, organization?.Address))
                 {
-//#if DEBUG
-//                    pdfInvoiceHtmlStream.CopyTo(invoiceHtmlOutput);
-//                    pdfInvoiceHtmlStream.Position = 0;
-//#endif
+#if DEBUG
+                    await invoiceHtmlOutput.UploadFromStreamAsync(pdfInvoiceHtmlStream);
+                    pdfInvoiceHtmlStream.Position = 0;
+#endif
 
                     using (var invoicePdfStream = new MemoryStream())
                     {

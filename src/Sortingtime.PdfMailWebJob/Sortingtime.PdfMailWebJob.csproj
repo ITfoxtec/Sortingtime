@@ -27,8 +27,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.8.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.3" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.2" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="3.0.3" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Logging.ApplicationInsights" Version="3.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />    
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

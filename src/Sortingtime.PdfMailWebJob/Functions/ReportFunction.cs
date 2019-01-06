@@ -36,10 +36,9 @@ namespace Sortingtime.PdfMailWebJob.Functions
         public async Task SendReportPdfAsync(
             [QueueTrigger("sendreportpdf")] ReportQueue reportMessage,
             [Blob("report/{ReportId}.pdf", FileAccess.Write)] CloudBlockBlob reportPdfOutput,
-           //
-//#if DEBUG
-//            [Blob("report/{ReportId}.html", FileAccess.Write)] Stream reportHtmlOutput,
-//#endif
+#if DEBUG
+            [Blob("report/{ReportId}.html", FileAccess.Write)] CloudBlockBlob reportHtmlOutput,
+#endif
             CancellationToken cancellationToken)
         {
             try
@@ -63,10 +62,10 @@ namespace Sortingtime.PdfMailWebJob.Functions
 
                 using (var pdfReportHtmlStream = await ReportHtml.CreateReportStream(translate, reportData.ShowGroupColl, organization?.Logo, organization?.Name, organization?.Address, reportData.ReportTitle, reportData.ReportSubTitle, reportData.ReportText, reportData.Report))
                 {
-//#if DEBUG
-//                    pdfReportHtmlStream.CopyTo(reportHtmlOutput);
-//                    pdfReportHtmlStream.Position = 0;
-//#endif
+#if DEBUG
+                    await reportHtmlOutput.UploadFromStreamAsync(pdfReportHtmlStream);
+                    pdfReportHtmlStream.Position = 0;
+#endif
 
                     using (var reportPdfStream = new MemoryStream())
                     {
