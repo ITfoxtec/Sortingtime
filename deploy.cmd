@@ -71,11 +71,15 @@ echo Handling ASP.NET Core Web Application deployment.
 call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\Sortingtime.sln"
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: 2. Build and publish
+:: 2. Build and publish Sortingtime.csproj
 call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: 3. KuduSync
+:: 3. Build and publish Sortingtime.PdfMailWebJob.csproj
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime.PdfMailWebJob\Sortingtime.PdfMailWebJob.csproj" --output "%DEPLOYMENT_TEMP%\app_data\jobs\continuous\PdfMailWebJob" --configuration Release
+IF !ERRORLEVEL! NEQ 0 goto error
+
+:: 4. KuduSync
 call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
