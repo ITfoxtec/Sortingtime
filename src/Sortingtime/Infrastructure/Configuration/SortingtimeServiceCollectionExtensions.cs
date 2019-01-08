@@ -19,7 +19,7 @@ namespace Sortingtime.Infrastructure.Configuration
             return services;
         }
 
-        public static IServiceCollection AddSortingtimeAddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSortingtimeDataProtection(this IServiceCollection services, IConfiguration configuration)
         {
             var storageAccount = CloudStorageAccount.Parse(configuration.GetConnectionString("AzureWebJobsStorage"));
             var cloudBlobClient = storageAccount.CreateCloudBlobClient();

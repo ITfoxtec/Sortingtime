@@ -46,7 +46,7 @@ namespace Sortingtime
 
             services.AddSortingtime(Configuration);
 
-            services.AddSortingtimeAddDataProtection(Configuration);
+            services.AddSortingtimeDataProtection(Configuration);
 
             services.AddMvc().AddJsonOptions(options =>
             {
