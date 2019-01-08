@@ -19,9 +19,12 @@ namespace Sortingtime.PdfMailWebJob
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            var builder = new HostBuilder()
-                .UseEnvironment(environment)
-                .ConfigureWebJobs(b =>
+            var builder = new HostBuilder();
+            if (IsDevelopment(environment))
+            {
+                builder.UseEnvironment(environment);
+            }
+            builder.ConfigureWebJobs(b =>
                 {
                     b.AddAzureStorageCoreServices()
                         // This is for QueueTrigger support
@@ -37,9 +40,12 @@ namespace Sortingtime.PdfMailWebJob
                 .ConfigureAppConfiguration(b =>
                 {
                     b.SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: false)
-                        .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                        .AddEnvironmentVariables();
+                        .AddJsonFile("appsettings.json", optional: false);
+                    if (IsDevelopment(environment))
+                    {
+                        b.AddJsonFile($"appsettings.{environment}.json", optional: true);
+                    }
+                    b.AddEnvironmentVariables();
                 })
                 .ConfigureLogging((context, b) =>
                 {
