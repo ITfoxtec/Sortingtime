@@ -69,7 +69,7 @@ namespace Sortingtime.PdfMailWebJob
                 .UseConsoleLifetime()     
                 .ConfigureServices((context, services) =>
                  {
-                     services.BindConfig<MailSettings>(context.Configuration, nameof(MailSettings));
+                     services.BindConfig<MailSettings>(context.Configuration, "Mail");
                      services.AddTransient<ApplicationDbContext>(b => new ApplicationConfigDbContext(context.Configuration.GetConnectionString("DefaultConnection")));
                      services.AddTransient<EmailMessageProvider>();
                      services.AddTransient<ReportFunction>();

@@ -11,7 +11,7 @@ namespace Sortingtime.Infrastructure.Configuration
     {
         public static IServiceCollection AddSortingtime(this IServiceCollection services, IConfiguration configuration)
         {
-            services.BindConfig<MailSettings>(configuration, nameof(MailSettings));
+            services.BindConfig<MailSettings>(configuration, "Mail");
             
             services.AddSortingtimeLogic();
             services.AddSortingtimeProviders();
