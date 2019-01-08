@@ -76,7 +76,7 @@ call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime\Sortingtime
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. Build and publish Sortingtime.PdfMailWebJob.csproj
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime.PdfMailWebJob\Sortingtime.PdfMailWebJob.csproj" --output "%DEPLOYMENT_TEMP%\app_data\jobs\continuous" --configuration Release
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\src\Sortingtime.PdfMailWebJob\Sortingtime.PdfMailWebJob.csproj" --output "%DEPLOYMENT_TEMP%\app_data\jobs\continuous\PdfMailWebJob" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 4. KuduSync
