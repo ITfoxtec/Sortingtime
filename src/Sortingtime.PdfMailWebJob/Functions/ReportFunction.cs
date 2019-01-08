@@ -15,30 +15,43 @@ using System.Net.Mail;
 using Sortingtime.ApiModels;
 using Sortingtime.PdfMailWebJob.Infrastructure.Extension;
 using Sortingtime.PdfMailWebJob.HtmlGenerators;
+using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Sortingtime.PdfMailWebJob.Functions
 {
     public class ReportFunction
     {
-        public async static Task SendReportPdfAsync(
-            [QueueTrigger("sendreportpdf")] ReportQueue reportMessage,
-            [Blob("report/{ReportId}.pdf", FileAccess.Write)] Stream reportPdfOutput,
-#if DEBUG
-            [Blob("report/{ReportId}.html", FileAccess.Write)] Stream reportHtmlOutput,
-#endif
-            TextWriter log, CancellationToken cancellationToken)
+        private readonly ILogger logger;
+        private readonly ApplicationDbContext dbContext;
+        private readonly EmailMessageProvider emailMessageProvider;
+
+        public ReportFunction(ILogger<ReportFunction> logger, ApplicationDbContext dbContext, EmailMessageProvider emailMessageProvider)
         {
-            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
-            log.WriteLine($"SendReport trigger event recived, ID: {reportMessage?.ReportId}.");
+            this.logger = logger;
+            this.dbContext = dbContext;
+            this.emailMessageProvider = emailMessageProvider;
+        }
 
-            if (string.IsNullOrEmpty(reportMessage?.CultureName)) throw new ArgumentNullException(nameof(ReportQueue.CultureName));
-
-            CultureHandler.SetCulture(reportMessage.CultureName);
-            var translate = new Translate();
-
-            using (var dbContext = new ApplicationConfigDbContext())
+        public async Task SendReportPdfAsync(
+            [QueueTrigger("sendreportpdf")] ReportQueue reportMessage,
+            [Blob("report/{ReportId}.pdf", FileAccess.Write)] CloudBlockBlob reportPdfOutput,
+#if DEBUG
+            [Blob("report/{ReportId}.html", FileAccess.Write)] CloudBlockBlob reportHtmlOutput,
+#endif
+            CancellationToken cancellationToken)
+        {
+            try
             {
-                var report = dbContext.Reports.Where(r =>  (r.Status == ReportStatus.Created || r.Status == ReportStatus.Resending) && 
+                Trace.CorrelationManager.ActivityId = Guid.NewGuid();
+                logger.LogTrace($"SendReport trigger event recived, ID: {reportMessage?.ReportId}.");
+
+                if (string.IsNullOrEmpty(reportMessage?.CultureName)) throw new ArgumentNullException(nameof(ReportQueue.CultureName));
+
+                CultureHandler.SetCulture(reportMessage.CultureName);
+                var translate = new Translate();
+
+                var report = dbContext.Reports.Where(r => (r.Status == ReportStatus.Created || r.Status == ReportStatus.Resending) &&
                     r.PartitionId == reportMessage.PartitionId && r.Id == reportMessage.ReportId).FirstOrDefault();
                 if (report == null)
                 {
@@ -50,36 +63,41 @@ namespace Sortingtime.PdfMailWebJob.Functions
                 using (var pdfReportHtmlStream = await ReportHtml.CreateReportStream(translate, reportData.ShowGroupColl, organization?.Logo, organization?.Name, organization?.Address, reportData.ReportTitle, reportData.ReportSubTitle, reportData.ReportText, reportData.Report))
                 {
 #if DEBUG
-                    pdfReportHtmlStream.CopyTo(reportHtmlOutput);
+                    await reportHtmlOutput.UploadFromStreamAsync(pdfReportHtmlStream);
                     pdfReportHtmlStream.Position = 0;
 #endif
 
                     using (var reportPdfStream = new MemoryStream())
                     {
-                        log.WriteLine($"Before create PDF: {reportMessage?.ReportId}.");
+                        logger.LogTrace($"Before create PDF: {reportMessage?.ReportId}.");
                         PdfProvider.CreatePdfAsync(reportPdfStream, pdfReportHtmlStream, cancellationToken: cancellationToken);
-                        log.WriteLine($"After create PDF: {reportMessage?.ReportId}.");
+                        logger.LogTrace($"After create PDF: {reportMessage?.ReportId}.");
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
-                            await SendEmailReport(reportPdfStream, log, translate, report);
-                            await UpdateReportStatus(dbContext, reportMessage.PartitionId, reportMessage.ReportId, report.Status == ReportStatus.Created ? ReportStatus.Send : ReportStatus.Resend);
+                            await SendEmailReport(reportPdfStream, translate, report);
+                            await UpdateReportStatus(reportMessage.PartitionId, reportMessage.ReportId, report.Status == ReportStatus.Created ? ReportStatus.Send : ReportStatus.Resend);
                         }
 
-                        await reportPdfStream.CopyToAsync(reportPdfOutput);
+                       await reportPdfOutput.UploadFromStreamAsync(reportPdfStream);
                     }
                 }
-            }
 
-            log.WriteLine($"SendReport report send, ID: {reportMessage?.ReportId}.");
+                logger.LogTrace($"SendReport report send, ID: {reportMessage?.ReportId}.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"SendReport failed, ID: {reportMessage?.ReportId}.");
+                throw;
+            }
         }
 
-        private static async Task SendEmailReport(MemoryStream reportPdfStream, TextWriter log, Translate translate, Report report)
+        private async Task SendEmailReport(MemoryStream reportPdfStream, Translate translate, Report report)
         {
             var subject = Encoding.UTF8.GetBytes($"{report.EmailSubject} #{report.Number}");
             var emailHtml = Encoding.UTF8.GetBytes(report.EmailBody.ToEmailHtml());
             
-            await new EmailMessageProvider(log).SendEmailAsync(
+            await emailMessageProvider.SendEmailAsync(
                 report.ToEmail.ToMailAddressArray(),
                 Encoding.UTF8.GetString(subject),
                 Encoding.UTF8.GetString(emailHtml),
@@ -90,7 +108,7 @@ namespace Sortingtime.PdfMailWebJob.Functions
             reportPdfStream.Position = 0;
         }       
 
-        private static async Task UpdateReportStatus(ApplicationConfigDbContext dbContext, long currentPartitionId, long reportId, ReportStatus status)
+        private async Task UpdateReportStatus(long currentPartitionId, long reportId, ReportStatus status)
         {
             var report = dbContext.Reports.Where(r => r.PartitionId == currentPartitionId && r.Id == reportId).Single();
             report.Status = status;

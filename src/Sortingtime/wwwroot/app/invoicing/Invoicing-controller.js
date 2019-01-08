@@ -280,7 +280,7 @@
                                 }                                
                                 else if (key.toLowerCase().indexOf("invoicedate") != -1) {
                                     fieldError = true;
-                                    createInvoiceTabAvtive = 1; // Second tab
+                                    self.createInvoiceTabAvtive = 1; // Second tab
                                     self.createInvoiceForm.invoiceDate.setServerErrorValidity(false, error.data[key]);
                                 }
                                 else if (key.toLowerCase().indexOf("invoicereference") != -1) {

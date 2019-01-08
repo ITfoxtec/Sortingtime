@@ -1,16 +1,8 @@
 {
   "name": "Sortingtime",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "private": true,
   "devDependencies": {
-    "graceful-fs": "4.1.11",
-    "gulp": "3.9.1",
-    "gulp-chmod": "2.0.0",
-    "gulp-clean-css": "4.0.0",
-    "gulp-concat": "2.6.1",
-    "gulp-less": "3.5.0",
-    "gulp-uglify": "3.0.0",
-    "gulp-util": "3.0.8",
-    "rimraf": "2.6.2",
     "async-mutex": "0.1.3"
   }
 }

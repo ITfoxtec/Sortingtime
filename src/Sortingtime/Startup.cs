@@ -32,11 +32,7 @@ namespace Sortingtime
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-#if DEBUG
-                b => b.MigrationsAssembly("Sortingtime")
-#endif                
-                )); 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sortingtime"))); 
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(o =>  {
                 o.Password.RequiredLength = 5;
@@ -48,9 +44,9 @@ namespace Sortingtime
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddSortingtime();
+            services.AddSortingtime(Configuration);
 
-            services.AddSortingtimeAddDataProtection(Configuration);
+            services.AddSortingtimeDataProtection(Configuration);
 
             services.AddMvc().AddJsonOptions(options =>
             {

@@ -2,20 +2,24 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
+using Sortingtime.Infrastructure;
+using Sortingtime.Models;
 
 namespace Sortingtime.Infrastructure.Configuration
 {
     public static class SortingtimeServiceCollectionExtensions
     {
-        public static IServiceCollection AddSortingtime(this IServiceCollection services)
+        public static IServiceCollection AddSortingtime(this IServiceCollection services, IConfiguration configuration)
         {
+            services.BindConfig<MailSettings>(configuration, "Mail");
+            
             services.AddSortingtimeLogic();
             services.AddSortingtimeProviders();
 
             return services;
         }
 
-        public static IServiceCollection AddSortingtimeAddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSortingtimeDataProtection(this IServiceCollection services, IConfiguration configuration)
         {
             var storageAccount = CloudStorageAccount.Parse(configuration.GetConnectionString("AzureWebJobsStorage"));
             var cloudBlobClient = storageAccount.CreateCloudBlobClient();
