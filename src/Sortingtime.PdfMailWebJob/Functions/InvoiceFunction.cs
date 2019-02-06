@@ -101,7 +101,7 @@ namespace Sortingtime.PdfMailWebJob.Functions
                 invoice.ToEmail.ToMailAddressArray(),
                 Encoding.UTF8.GetString(subject),
                 Encoding.UTF8.GetString(emailHtml),
-                fromEmail: new MailAddress(invoice.FromEmail, invoice.FromFullName),
+                fromEmailAsCc: new MailAddress(invoice.FromEmail),
                 attachmentName: string.Format("{0} {1}.pdf", translate.Get("INVOICE.FILENAME"), invoice.Number),
                 attachmentStream: invoicePdfStream);
 

@@ -68,7 +68,7 @@ namespace Sortingtime.Controllers
                 await emailMessageProvider.SendEmailAsync(
                    new MailAddress[] { new MailAddress("support@sortingtime.com") },
                    $"{translate.Get("SUPPORT.SUPPORT")} [id:{DateTime.Now.Ticks}]", model.Message.ToHtml(),
-                   fromEmail: new MailAddress(model.Email, model.FullName));
+                   fromEmailAsCc: new MailAddress(model.Email));
 
                 return RedirectToAction("SupportConfirmation", Request.RouteCulture());
             }

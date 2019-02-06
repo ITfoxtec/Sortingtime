@@ -16,29 +16,26 @@ namespace Sortingtime.Infrastructure
 
         public Action<string> MessageSendtAudit { get; set; }
 
-        public async Task SendEmailAsync(MailAddress[] toEmail, string subject, string htmlBody, MailAddress fromEmail = null, string attachmentName = null, MemoryStream attachmentStream = null)
+        public async Task SendEmailAsync(MailAddress[] toEmail, string subject, string htmlBody, MailAddress fromEmailAsCc = null, string attachmentName = null, MemoryStream attachmentStream = null)
         {
             var mail = new SendGridMessage();
+            mail.From = new EmailAddress(DefaultFromEmail);
 
-            if (fromEmail != null)
+            if (toEmail == null || toEmail.Length < 1)
             {
-                mail.From = new EmailAddress(fromEmail.Address);
+                throw new Exception("At least one to email is required.");
             }
-            else
+            mail.AddTo(new EmailAddress(toEmail[0].Address));
+            if (toEmail.Length > 1)
             {
-                mail.From = new EmailAddress(DefaultFromEmail);
-            }
-
-            if (toEmail != null && toEmail.Length > 0)
-            {
-                mail.AddTo(new EmailAddress(toEmail[0].Address));
-                if (toEmail.Length > 1)
+                for (int i = 1; i < toEmail.Length; i++)
                 {
-                    for (int i = 1; i < toEmail.Length; i++)
-                    {
-                        mail.AddCc(new EmailAddress(toEmail[i].Address));
-                    }
+                    mail.AddCc(new EmailAddress(toEmail[i].Address));
                 }
+            }
+            if (fromEmailAsCc != null && !toEmail.Where(e => fromEmailAsCc.Address.Equals(e.Address, StringComparison.InvariantCultureIgnoreCase)).Any())
+            {
+                mail.AddCc(new EmailAddress(fromEmailAsCc.Address));
             }
 
             mail.Subject = subject;

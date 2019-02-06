@@ -25,11 +25,11 @@ namespace Sortingtime.Infrastructure
             };
         }
 
-        public async Task SendEmailAsync(MailAddress[] toEmail, string subject, string htmlBody, MailAddress fromEmail = null, string attachmentName = null, MemoryStream attachmentStream = null)
+        public async Task SendEmailAsync(MailAddress[] toEmail, string subject, string htmlBody, MailAddress fromEmailAsCc = null, string attachmentName = null, MemoryStream attachmentStream = null)
         {
             try
             {
-                await emailMessageClient.SendEmailAsync(toEmail, subject, htmlBody, fromEmail, attachmentName, attachmentStream);
+                await emailMessageClient.SendEmailAsync(toEmail, subject, htmlBody, fromEmailAsCc, attachmentName, attachmentStream);
             }
             catch (Exception exc)
             {

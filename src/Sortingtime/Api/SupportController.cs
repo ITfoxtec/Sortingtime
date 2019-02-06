@@ -38,7 +38,7 @@ namespace Sortingtime.Api
             await emailMessageProvider.SendEmailAsync(
                     new MailAddress[] { new MailAddress("support@sortingtime.com") },
                     $"{translate.Get("SUPPORT.SUPPORT")} [id:{DateTime.Now.Ticks}]", item.Message.ToHtml(),
-                    fromEmail: new MailAddress(user.Email, user.FullName));
+                    fromEmailAsCc: new MailAddress(user.Email));
 
             return Ok();
         }

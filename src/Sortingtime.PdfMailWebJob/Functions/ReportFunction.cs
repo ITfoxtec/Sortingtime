@@ -101,7 +101,7 @@ namespace Sortingtime.PdfMailWebJob.Functions
                 report.ToEmail.ToMailAddressArray(),
                 Encoding.UTF8.GetString(subject),
                 Encoding.UTF8.GetString(emailHtml),
-                fromEmail: new MailAddress(report.FromEmail, report.FromFullName),
+                fromEmailAsCc: new MailAddress(report.FromEmail),
                 attachmentName: string.Format("{0} {1}.pdf", translate.Get("REPORT.FILENAME"), report.Number),
                 attachmentStream: reportPdfStream);
 
