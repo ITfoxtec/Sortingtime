@@ -33,15 +33,17 @@ namespace Sortingtime
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Sortingtime"))); 
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(o =>  {
-                o.Password.RequiredLength = 5;
-                o.Password.RequireUppercase = false;
-                o.Password.RequireLowercase = false;
-                o.Password.RequireDigit = false;
-                o.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+            services
+                .AddIdentity<ApplicationUser, ApplicationRole>(o => 
+                {
+                    o.Password.RequiredLength = 5;
+                    o.Password.RequireUppercase = false;
+                    o.Password.RequireLowercase = false;
+                    o.Password.RequireDigit = false;
+                    o.Password.RequireNonAlphanumeric = false;
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddSortingtime(Configuration);
 
