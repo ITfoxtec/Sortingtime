@@ -95,6 +95,8 @@
     "PRICE": "Price",
     "PERSON": "Person",
     "FILENAME": "Invoice",
+    "CREDIT_NOTE": "Credit note",
+    "CREDIT_NOTE_FILENAME": "Credit note",
     "EMAIL_COMMA_ERROR": "Invalid email addresses. Please separate with comma.",
     "MAXIMUM_INVOICES_ERROR": "The maximum number of invoices per month is exceeded.",
     "VAT_NUMBER": "VAT number",

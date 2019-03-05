@@ -23,7 +23,7 @@ namespace Sortingtime.Api
         {
             var translate = new Translate();
 
-            var invoice = await DbContext.Invoices.Where(i => i.PartitionId == CurrentPartitionId && i.Id == id).Select(i => new { i.Number }).FirstOrDefaultAsync();
+            var invoice = await DbContext.Invoices.Where(i => i.PartitionId == CurrentPartitionId && i.Id == id).Select(i => new { i.CreditNote, i.Number }).FirstOrDefaultAsync();
 
             if (invoice == null)
                 return new NotFoundResult();
@@ -39,7 +39,7 @@ namespace Sortingtime.Api
             memoryStream.Position = 0;
             return new FileStreamResult(memoryStream, "application/pdf")
             {
-                FileDownloadName = $"{translate.Get("INVOICE.FILENAME")} {invoice.Number}.pdf",
+                FileDownloadName = $"{(!invoice.CreditNote ? translate.Get("INVOICE.FILENAME") : translate.Get("INVOICE.CREDIT_NOTE_FILENAME"))} {invoice.Number}.pdf",
             };
         }
     }

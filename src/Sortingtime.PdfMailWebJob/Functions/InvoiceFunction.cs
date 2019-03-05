@@ -102,7 +102,7 @@ namespace Sortingtime.PdfMailWebJob.Functions
                 Encoding.UTF8.GetString(subject),
                 Encoding.UTF8.GetString(emailHtml),
                 fromEmailAsCc: new MailAddress(invoice.FromEmail),
-                attachmentName: string.Format("{0} {1}.pdf", translate.Get("INVOICE.FILENAME"), invoice.Number),
+                attachmentName: string.Format("{0} {1}.pdf", !invoice.CreditNote ? translate.Get("INVOICE.FILENAME") : translate.Get("INVOICE.CREDIT_NOTE_FILENAME"), invoice.Number),
                 attachmentStream: invoicePdfStream);
 
             invoicePdfStream.Position = 0;

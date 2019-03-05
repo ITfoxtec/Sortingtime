@@ -15,6 +15,7 @@
     [ToEmail]         NVARCHAR (400)  NULL,
     [UpdateTimestamp] DATETIME2 (7)   NOT NULL,
     [UserId]          BIGINT          NOT NULL,
+    [CreditNote] BIT NULL, 
     CONSTRAINT [PK_Invoices] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Invoices_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_Invoices_Partitions_PartitionId] FOREIGN KEY ([PartitionId]) REFERENCES [dbo].[Partitions] ([Id]) ON DELETE CASCADE

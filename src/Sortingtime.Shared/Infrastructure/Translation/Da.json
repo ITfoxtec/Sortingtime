@@ -95,6 +95,8 @@
     "PRICE": "Pris",
     "PERSON": "Person",
     "FILENAME": "Faktura",
+    "CREDIT_NOTE": "Kreditnota",
+    "CREDIT_NOTE_FILENAME": "Kreditnota",
     "EMAIL_COMMA_ERROR": "Ugyldige e-mail adresse. E-mails separeres med komma.",
     "MAXIMUM_INVOICES_ERROR": "Det maksimale antal fakturaer pr. måned er oversteget.",
     "VAT_NUMBER": "Momsnummer",

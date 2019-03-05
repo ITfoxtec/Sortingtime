@@ -6,6 +6,8 @@ namespace Sortingtime.ApiModels
 {
     public class InvoiceAndContentApi
     {
+        public bool? CreditNote { get; set; }
+
         public long? RelatedId { get; set; }
 
         [Required]

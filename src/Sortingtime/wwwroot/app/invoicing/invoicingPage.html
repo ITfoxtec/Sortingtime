@@ -114,15 +114,15 @@
                         <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{(invoiceItem.status == 100 ? 'INVOICE.STATE_CREATED' : (invoiceItem.status == 200 ? 'INVOICE.STATE_RESENDING' : (invoiceItem.status == 600 ? 'INVOICE.STATE_RESEND' : 'INVOICE.STATE_SEND')))|translate}}</td>
                         <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{invoiceItem.toEmail}}</td>
                         <td ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)" class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}">{{::invoiceItem.customerShort}}</td>
-                        <td class="text-right {{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)">{{::invoiceItem.subTotalPrice | currency}}</td>
-                        <td class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" style="cursor:default"><a class="btn-link" ng-disabled="invoiceItem.status < 500" target="_blank" href="/api/invoicepdf/{{::invoiceItem.id}}" title="" download>{{'INVOICE.INVOICE'|translate}} {{::invoiceItem.number}}.pdf</a></td>
+                        <td class="text-right {{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" ng-click="ivCtrl.showInvoiceItemMenu($event, $index, invoiceItem)">{{::invoiceItem.subTotalPrice * (invoiceItem.creditNote !== true ? 1 : -1) | currency}}</td>
+                        <td class="{{(ivCtrl.invoiceItemMenuIsOpen && invoiceItem.selected) || invoiceItem.selectedPopup ? 'selected' : ''}}" style="cursor:default"><a class="btn-link" ng-disabled="invoiceItem.status < 500" target="_blank" href="/api/invoicepdf/{{::invoiceItem.id}}" title="" download>{{(invoiceItem.creditNote !== true ? 'INVOICE.INVOICE' : 'INVOICE.CREDIT_NOTE')|translate}} {{::invoiceItem.number}}.pdf</a></td>
                     </tr>
                 </table>
                 <div id="invoiceItemMenuContainder">
                     <div id="invoiceItemMenu" class="table-dropdown" uib-dropdown is-open="ivCtrl.invoiceItemMenuIsOpen">
                         <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                            <li role="menuitem"><a ng-click="ivCtrl.showDetailInvoiceItem($event)" translate-once="INVOICE.RESEND_INVOICE"></a></li>
-                            <li role="menuitem"><a ng-click="ivCtrl.showCreateCreditNotaDialog($event)" translate-once="INVOICE.CREDIT_NOTE"></a></li>
+                            <li role="menuitem"><a ng-click="ivCtrl.showDetailInvoiceDialog($event)" translate-once="INVOICE.RESEND_INVOICE"></a></li>
+                            <li role="menuitem"><a ng-click="ivCtrl.showCreateCreditNoteDialog($event)" translate-once="INVOICE.CREDIT_NOTE"></a></li>
                             <li class="divider"></li>
                             <li role="menuitem"><a ng-click="ivCtrl.showDeleteInvoiceDialog($event)" translate-once="INVOICE.DELETE_INVOICE"></a></li>
                         </ul>
@@ -375,11 +375,11 @@
     </form>
 </modal>
 
-<modal m-title="{{'INVOICE.INVOICE'|translate}}" m-sizes="modal-lg" m-visible="ivCtrl.showDetailInvoiceDialogToggle">
+<modal m-title="{{(ivCtrl.invoiceCreditNote !== true ? 'INVOICE.INVOICE' : 'INVOICE.CREDIT_NOTE')|translate}}" m-sizes="modal-lg" m-visible="ivCtrl.showDetailInvoiceDialogToggle">
     <form name="ivCtrl.detailInvoiceForm" class="form-horizontal" autocomplete="off" novalidate>
         <uib-tabset>
             <uib-tab>
-                <uib-tab-heading translate-once="INVOICE.INVOICE_EMAIL"></uib-tab-heading>
+                <uib-tab-heading translate="{{(ivCtrl.invoiceCreditNote !== true ? 'INVOICE.INVOICE_EMAIL' : 'INVOICE.CREDIT_NOTE_EMAIL')}}"></uib-tab-heading>
                 <div class="form-group">
                     <div class="col-sm-9">
                         <input name="sendToEmail" type="text" class="form-control inactive-save" ng-maxlength="400" translate-once-title="INVOICE.SEND_TO_EMAIL" translate-once-placeholder="INVOICE.SEND_TO_EMAIL" required ng-model="ivCtrl.invoiceSentToEmail" />
@@ -387,32 +387,53 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote !== true">
                     <div class="col-sm-9">
                         <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="INVOICE.EMAIL_SUBJECT" translate-once-placeholder="INVOICE.EMAIL_SUBJECT" required ng-model="ivCtrl.invoiceEmailSubject" />
                         <field-error field="ivCtrl.detailInvoiceForm.emailSubject" />
                     </div>
                     <label class="col-sm-3 control-label" style="text-align:left"><i>#{{ivCtrl.invoiceNumber}}</i></label>
                 </div>
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote === true">
+                    <div class="col-sm-9">
+                        <input name="emailSubject" type="text" class="form-control inactive-save font-bold" ng-maxlength="400" translate-once-title="INVOICE.EMAIL_SUBJECT" translate-once-placeholder="INVOICE.EMAIL_SUBJECT" required ng-model="ivCtrl.creditNoteEmailSubject" />
+                        <field-error field="ivCtrl.detailInvoiceForm.emailSubject" />
+                    </div>
+                </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote !== true">
                     <div class="col-sm-12">
                         <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="INVOICE.EMAIL_BODY" translate-once-placeholder="INVOICE.EMAIL_BODY" ng-model="ivCtrl.invoiceEmailBody" />
                         <field-error field="ivCtrl.detailInvoiceForm.emailBody" />
                     </div>
                 </div>
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote === true">
+                    <div class="col-sm-12">
+                        <textarea name="emailBody" type="text" rows="8" class="form-control inactive-save" ng-maxlength="4000" translate-once-title="INVOICE.EMAIL_BODY" translate-once-placeholder="INVOICE.EMAIL_BODY" ng-model="ivCtrl.creditNoteEmailBody" />
+                        <field-error field="ivCtrl.detailInvoiceForm.emailBody" />
+                    </div>
+                </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote !== true">
                     <div class="col-sm-12">
                         <div class="col-sm-6 form-control"><a id="detailinvoicedownload" target="_blank" href="/api/invoicepdf/{{ivCtrl.invoiceId}}" download="{{'INVOICE.INVOICE'|translate}} {{ivCtrl.invoiceNumber}}.pdf">{{'INVOICE.ATTACHED_INVOICE'|translate}}, {{'INVOICE.INVOICE'|translate}} {{ivCtrl.invoiceNumber}}.pdf</a></div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="ivCtrl.invoiceCreditNote === true">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 form-control">{{'INVOICE.ATTACHED_PDF_CREDIT_NOTE'|translate}} {{ivCtrl.invoiceNumber}}</div>
                     </div>
                 </div>
             </uib-tab>
         </uib-tabset>
         <div class="form-group form-group-button">
-            <div class="col-sm-offset-3 col-sm-9">
+            <div class="col-sm-offset-3 col-sm-9" ng-if="ivCtrl.invoiceCreditNote !== true">
                 <button type="submit" class="btn btn-default btn-primary" ng-click="ivCtrl.resendDetailInvoice()" translate-once="INVOICE.SEND_INVOICE"></button>
                 <button type="submit" class="btn btn-default" ng-click="ivCtrl.cancelDetailInvoiceDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
+            </div>
+            <div class="col-sm-offset-3 col-sm-9" ng-if="ivCtrl.invoiceCreditNote === true">
+                <button type="submit" class="btn btn-default btn-primary" ng-click="ivCtrl.createCreditNoteInvoice()" translate-once="INVOICE.SEND_CREDIT_NOTE"></button>
+                <button type="submit" class="btn btn-default" ng-click="ivCtrl.cancelCreateCreditNoteDialog()" translate-once="GENERAL.BUTTONS.CANCEL"></button>
             </div>
         </div>
     </form>

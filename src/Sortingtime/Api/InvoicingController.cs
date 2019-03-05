@@ -128,7 +128,14 @@ namespace Sortingtime.Api
 
             if (item.RelatedId.HasValue)
             {
-                invoice = await ResendInvoice(item, item.RelatedId.Value);
+                if(item.CreditNote.HasValue && item.CreditNote.Value)
+                {
+                    invoice = await CreateCreditNote(translate, item, item.RelatedId.Value);
+                }
+                else
+                {
+                    invoice = await ResendInvoice(item, item.RelatedId.Value);
+                }
                 if (invoice == null)
                 {
                     return new NotFoundResult();
@@ -159,6 +166,7 @@ namespace Sortingtime.Api
                 InvoiceDate = invoice.InvoiceDate,
                 SubTotalPrice = invoice.SubTotalPrice,
                 ToEmail = invoice.ToEmail,
+                CreditNote = invoice.CreditNote ? true as bool? : null
             });
         }
 
@@ -211,6 +219,35 @@ namespace Sortingtime.Api
             }
             return invoice;
         }
+
+        private async Task<Invoice> CreateCreditNote(Translate translate, InvoiceAndContentApi item, long invoiceId)
+        {
+            var invoice = await DbContext.Invoices.Where(i => i.PartitionId == CurrentPartitionId && i.Id == invoiceId).FirstOrDefaultAsync();
+            if (invoice != null)
+            {
+                var creditNote = Invoice.CreateNew(CurrentPartitionId, CurrentUserId, await NextInvoiceNumber());
+                creditNote.CreditNote = true;
+
+                creditNote.CustomerShort = invoice.CustomerShort;
+                creditNote.SubTotalPrice = invoice.SubTotalPrice;
+
+                await MapDeltaValuesAndCleanWhiteSpace(item, creditNote);
+
+                creditNote.InvoiceDate = DateTime.Now.Date;
+
+                var creditNoteInvoiceData = await invoice.InvoiceData.FromJson<InvoiceDataApi>();
+                creditNoteInvoiceData.InvoiceTitle = translate.Get("INVOICE.CREDIT_NOTE");
+                creditNoteInvoiceData.PaymentDetails = null;
+                creditNoteInvoiceData.InvoicePaymentTerms = null;
+                creditNote.InvoiceData = await creditNoteInvoiceData.ToJson();
+
+                DbContext.Invoices.Add(creditNote);
+                await DbContext.SaveChangesAsync();
+
+                return creditNote;
+            }
+            return invoice;
+        }        
 
         private void QueueInvoice(Invoice invoice)
         {

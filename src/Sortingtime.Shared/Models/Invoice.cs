@@ -57,6 +57,8 @@ namespace Sortingtime.Models
         public long UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
+        public bool CreditNote { get; set; }        
+
         public static Invoice CreateNew(long partitionId, long userId, long number)
         {
             return new Invoice

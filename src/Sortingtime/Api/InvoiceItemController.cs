@@ -39,7 +39,8 @@ namespace Sortingtime.Api
                     CustomerShort = i.CustomerShort,
                     SubTotalPrice = i.SubTotalPrice,
                     ToEmail = i.ToEmail,
-                }).ToListAsync();
+                    CreditNote = (i.CreditNote ? true as bool? : null),
+                }).OrderBy(i => i.Id).ToListAsync();
 
             return Json(invoices);
         }
@@ -59,6 +60,7 @@ namespace Sortingtime.Api
                     ToEmail = i.ToEmail,
                     EmailSubject = i.EmailSubject,
                     EmailBody = i.EmailBody,
+                    CreditNote = (i.CreditNote ? true as bool? : null),
                 }).FirstOrDefaultAsync();
 
             if (invoice == null)

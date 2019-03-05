@@ -29,7 +29,7 @@
         self.updateDateCursor = function (successCallBack, errorCallBack) {
             getAllItems();
             successCallBack();
-        }
+        };
 
         self.toggleSelectGroup = function ($event, groupTask) {
             $event.stopPropagation();
@@ -46,13 +46,13 @@
                     users = element.users;
                     for (var j = 0, jlen = users.length; j < jlen; j++) {
                         self.toggleSelectUser($event, users[j], null, selected);
-                    }                    
+                    }
                 }
             }
-        }
+        };
 
         self.toggleSelectTask = function ($event, groupTask) {
-            if ($event != null) {
+            if ($event !== null) {
                 $event.stopPropagation();
                 $event.preventDefault();
             }
@@ -71,10 +71,10 @@
                     }
                 }
             }
-        }
+        };
         
         self.toggleSelectUser = function ($event, user, groupTask, selectedInput) {
-            if ($event != null) {
+            if ($event !== null) {
                 $event.stopPropagation();
                 $event.preventDefault();
             }
@@ -87,13 +87,13 @@
                 selected = !user.selected;
             }
 
-            if (user.selected != selected) {
+            if (user.selected !== selected) {
                 if (user.price) {
                     self.sorting.selectedTotalPrice = self.sorting.selectedTotalPrice + (selected ? user.price : user.price * -1);
                 }
-                self.sorting.selectedUsers = self.sorting.selectedUsers + (selected ? 1 : -1)
-            }                
-            user.selected = selected;            
+                self.sorting.selectedUsers = self.sorting.selectedUsers + (selected ? 1 : -1);
+            }
+            user.selected = selected;
 
             if (groupTask) {
                 if (selected) {
@@ -111,14 +111,14 @@
                     groupTask.selected = selected;
                 }
             }
-        }
+        };
 
         self.noSelectUser = function ($event) {
-            if ($event != null) {
+            if ($event !== null) {
                 $event.stopPropagation();
                 $event.preventDefault();
             }
-        }        
+        };     
 
         self.activeSaveUserHourPrice = function (successCallBack, errorCallBack, data) {
             hourPriceSettingService.save(
@@ -126,14 +126,14 @@
                     groupReferenceKey: data.groupTask.group,
                     taskReferenceKey: data.groupTask.task,
                     userId: data.user.id,
-                    hourPrice: data.user.hourPrice,
+                    hourPrice: data.user.hourPrice
                 },
                 function (success) {
                     var oldPrice = (data.user.price ? data.user.price : 0);
                     data.user.price = data.user.hourPrice * data.user.time / 60;
                     var priceChange = data.user.price - oldPrice;
-                    data.groupTask.price = (data.groupTask.price ? data.groupTask.price: 0) + priceChange;
-                    self.sorting.totalPrice = (self.sorting.totalPrice ? self.sorting.totalPrice: 0) + priceChange;
+                    data.groupTask.price = (data.groupTask.price ? data.groupTask.price : 0) + priceChange;
+                    self.sorting.totalPrice = (self.sorting.totalPrice ? self.sorting.totalPrice : 0) + priceChange;
                     if (data.user.selected) {
                         self.sorting.selectedTotalPrice = (self.sorting.selectedTotalPrice ? self.sorting.selectedTotalPrice : 0) + priceChange;
                     }
@@ -144,8 +144,8 @@
                         for (var i = 0, ilen = self.sorting.groupTasks.length; i < ilen; i++) {
                             groupTaskElement = self.sorting.groupTasks[i];
                             for (var j = 0, jlen = groupTaskElement.users.length; j < jlen; j++) {
-                                userElement = groupTaskElement.users[j]
-                                if (userElement.id == data.user.id && userElement.hourPrice == null) {
+                                userElement = groupTaskElement.users[j];
+                                if (userElement.id == data.user.id && userElement.hourPrice === null) {
                                     userElement.hourPrice = data.user.hourPrice;
                                     oldPrice = userElement.price;
                                     userElement.price = userElement.hourPrice * userElement.time / 60;
@@ -161,7 +161,7 @@
                     if (error && error.data && angular.isObject(error.data)) {
                         var fieldError = false;
                         for (var key in error.data) {
-                            if (key.toLowerCase().indexOf("hourPrice") != -1) {
+                            if (key.toLowerCase().indexOf("hourPrice") !== -1) {
                                 fieldError = true;
                                 data.form.hourPrice.setServerErrorValidity(false, error.data[key]);
                             }
@@ -172,16 +172,16 @@
                         }
                     }
 
-                    notificationFactory.error(error)
+                    notificationFactory.error(error);
                 });
-        }
+        };
 
         // Create Invoice Dialog
         self.showCreateInvoiceDialog = function () {
             if (self.emptySorting) {
                 return;
             }
-          
+
             self.createInvoiceForm.$setPristine();
             self.createInvoiceTabAvtive = 0; // First tab
 
@@ -192,13 +192,13 @@
             getEmailAndInvoiceText();
 
             generateSelectedInvoice();
-            
+
             self.showCreateInvoiceDialogToggle = true;
-        }
+        };
 
         self.cancelCreateInvoiceDialog = function () {
             self.showCreateInvoiceDialogToggle = false;
-        }
+        };
 
         self.createInvoice = function () {
             self.createInvoiceForm.sendToEmail.$setDirty();
@@ -277,7 +277,7 @@
                                     fieldError = true;
                                     errorSecondTab = true;
                                     self.createInvoiceForm.invoicePaymentTerms.setServerErrorValidity(false, error.data[key]);
-                                }                                
+                                }
                                 else if (key.toLowerCase().indexOf("invoicedate") != -1) {
                                     fieldError = true;
                                     self.createInvoiceTabAvtive = 1; // Second tab
@@ -318,25 +318,25 @@
                             }
                         }
 
-                        notificationFactory.error(error)
+                        notificationFactory.error(error);
                     });
             }
             else {
                 if (self.createInvoiceForm.sendToEmail.$invalid ||
-                        self.createInvoiceForm.emailSubject.$invalid ||
-                        self.createInvoiceForm.emailBody.$invalid) {
+                    self.createInvoiceForm.emailSubject.$invalid ||
+                    self.createInvoiceForm.emailBody.$invalid) {
                     self.createInvoiceTabAvtive = 0; // First tab
                 }
                 else if ((self.currentOrganization.tax && (self.createInvoiceForm.invoiceTaxPercentage1.$invalid || self.createInvoiceForm.invoiceTaxPercentage2.$invalid)) ||
-                        (self.currentOrganization.vat && (self.createInvoiceForm.invoiceVatPercentage1.$invalid || self.createInvoiceForm.invoiceVatPercentage2.$invalid)) ||
-                        self.createInvoiceForm.invoiceDate.$invalid) {
+                    (self.currentOrganization.vat && (self.createInvoiceForm.invoiceVatPercentage1.$invalid || self.createInvoiceForm.invoiceVatPercentage2.$invalid)) ||
+                    self.createInvoiceForm.invoiceDate.$invalid) {
                     self.createInvoiceTabAvtive = 1; // Second tab
                 }
                 else {
                     self.createInvoiceTabAvtive = 0; // First tab
                 }
             }
-        }
+        };
 
         self.activeSaveOrganizationName = function (successCallBack, errorCallBack) {
             currentOrganizationService.saveName(self.currentOrganization.name,
@@ -344,7 +344,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }
+        };
 
         self.activeSaveOrganizationAddress = function (successCallBack, errorCallBack) {
             currentOrganizationService.saveAddress(self.currentOrganization.address,
@@ -352,7 +352,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }
+        };
 
         self.activeSaveOrganizationVatNumber = function (successCallBack, errorCallBack) {
             currentOrganizationService.saveVatNumber(self.currentOrganization.vatNumber,
@@ -360,7 +360,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }
+        };
 
         self.activeSaveOrganizationPaymentDetails = function (successCallBack, errorCallBack) {
             currentOrganizationService.savePaymentDetails(self.currentOrganization.paymentDetails,
@@ -368,7 +368,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }        
+        };     
 
         self.activeSaveOrganizationTaxPercentage = function (successCallBack, errorCallBack) {
             currentOrganizationService.saveTaxPercentage(self.currentOrganization.taxPercentage,
@@ -379,7 +379,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }
+        };
 
         self.activeSaveOrganizationVatPercentage = function (successCallBack, errorCallBack) {
             currentOrganizationService.saveVatPercentage(self.currentOrganization.vatPercentage,
@@ -390,7 +390,7 @@
                 function (error) {
                     errorCallBack(error);
                 });
-        }
+        };
 
         self.createInvoicePriceUpdate = function ($event, form, user) {
             if (form.$valid) {
@@ -401,33 +401,36 @@
 
                 calculateTaxVatTotal(true, true);
             }
-        }
+        };
 
         // Invoice Item Menu
         self.showInvoiceItemMenu = function ($event, $index, invoiceItem) {
             $event.preventDefault();
             $event.stopPropagation();
 
-            if (self.invoiceItemSelected) {
-                self.invoiceItemSelected.selected = false;
-                self.invoiceItemSelected.selectedPopup = false;
+            if (invoiceItem.creditNote !== true) {
+
+                if (self.invoiceItemSelected) {
+                    self.invoiceItemSelected.selected = false;
+                    self.invoiceItemSelected.selectedPopup = false;
+                }
+                invoiceItem.selected = true;
+                invoiceItem.index = $index;
+                self.invoiceItemSelected = invoiceItem;
+
+                $($event.target).append($('#invoiceItemMenu'));
+
+                self.invoiceItemMenuIsOpen = true;
             }
-            invoiceItem.selected = true;
-            invoiceItem.index = $index;
-            self.invoiceItemSelected = invoiceItem;
-
-            $($event.target).append($('#invoiceItemMenu'));
-
-            self.invoiceItemMenuIsOpen = true;
-        }
+        };
 
         var hideInvoiceItemMenu = function () {
             self.invoiceItemMenuIsOpen = false;
             $('#invoiceItemMenuContainder').append($('#invoiceItemMenu'));
-        }
+        };
 
         // Detail Invoice Dialog
-        self.showDetailInvoiceItem = function ($event) {
+        self.showDetailInvoiceDialog = function ($event) {
             $event.preventDefault();
             $event.stopPropagation();
 
@@ -444,18 +447,19 @@
                     self.invoiceSentToEmail = success.toEmail;
                     self.invoiceEmailSubject = success.emailSubject;
                     self.invoiceEmailBody = success.emailBody;
+                    self.invoiceCreditNote = success.creditNote;
                     self.showDetailInvoiceDialogToggle = true;
                     self.loading = false;
                 },
                 function (error) {
                     notificationFactory.error(error);
                 });
-        }
+        };
 
         self.cancelDetailInvoiceDialog = function () {
             self.invoiceItemSelected.selectedPopup = false;
             self.showDetailInvoiceDialogToggle = false;
-        }
+        };
 
         self.resendDetailInvoice = function () {
             self.detailInvoiceForm.sendToEmail.$setDirty();
@@ -471,7 +475,97 @@
                     // success response
                     function (success) {
                         self.invoiceItemSelected.status = 600,
-                        self.invoiceItemSelected.toEmail = success.toEmail,
+                            self.invoiceItemSelected.toEmail = success.toEmail,
+                            self.invoiceItemSelected.selectedPopup = false;
+                        self.showDetailInvoiceDialogToggle = false;
+                    },
+                    function (error) {
+                        if (error && error.data && angular.isObject(error.data)) {
+                            var fieldError = false;
+                            for (var key in error.data) {
+                                if (key.toLowerCase().indexOf("toemail") != -1) {
+                                    fieldError = true;
+                                    self.detailInvoiceForm.sendToEmail.setServerErrorValidity(false, error.data[key]);
+                                }
+                                else if (key.toLowerCase().indexOf("emailsubject") != -1) {
+                                    fieldError = true;
+                                    self.detailInvoiceForm.emailSubject.setServerErrorValidity(false, error.data[key]);
+                                }
+                                else if (key.toLowerCase().indexOf("emailbody") != -1) {
+                                    fieldError = true;
+                                    self.detailInvoiceForm.emailBody.setServerErrorValidity(false, error.data[key]);
+                                }
+                            }
+                            if (fieldError) {
+                                error.isHandled = true;
+                                return;
+                            }
+                        }
+
+                        notificationFactory.error(error);
+                    });
+            }
+        };
+
+        // Create Credit Note Dialog
+        self.showCreateCreditNoteDialog = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            if (!self.creditNoteEmailSubject) {
+                $translate('INVOICE.CREDIT_NOTE_EMAIL_SUBJECT_DFAULTTEXT').then(function (text) {
+                    self.creditNoteEmailSubject = text;
+                });
+            }
+            if (!self.creditNoteEmailBody) {
+                $translate('INVOICE.CREDIT_NOTE_EMAIL_BODY_DFAULTTEXT').then(function (text) {
+                    self.creditNoteEmailBody = text;
+                });
+            }
+           
+            self.invoiceItemSelected.selectedPopup = true;
+            hideInvoiceItemMenu();
+
+            self.detailInvoiceForm.$setPristine();
+
+            self.invoiceId = self.invoiceItemSelected.id;
+            invoiceItemService.get({ id: self.invoiceItemSelected.id },
+                function (success) {
+                    self.invoiceNumber = success.number;
+                    self.invoiceSubTotalPrice = success.subTotalPrice;
+                    self.invoiceSentToEmail = success.toEmail;
+                    self.invoiceEmailSubject = success.emailSubject;
+                    self.invoiceEmailBody = success.emailBody;
+                    self.invoiceCreditNote = true;
+                    self.showDetailInvoiceDialogToggle = true;
+                    self.loading = false;
+                },
+                function (error) {
+                    notificationFactory.error(error);
+                });
+        };
+
+        self.cancelCreateCreditNoteDialog = function () {
+            self.invoiceItemSelected.selectedPopup = false;
+            self.showDetailInvoiceDialogToggle = false;
+        };
+
+        self.createCreditNoteInvoice = function () {
+            self.detailInvoiceForm.sendToEmail.$setDirty();
+            self.detailInvoiceForm.emailSubject.$setDirty();
+            self.detailInvoiceForm.emailBody.$setDirty();
+
+            if (self.detailInvoiceForm.$valid) {
+                var invoiceContent = createInvoiceContentObject(false, true);
+                invoiceContent.relatedId = self.invoiceId;
+                invoiceContent.invoice = { subTotalPrice: self.invoiceSubTotalPrice };
+                invoiceContent.creditNote = true;
+
+                invoicingService.save(invoiceContent,
+                    // success response
+                    function (success) {
+                        self.invoiceItems.push(success);
+                        self.invoiceItems.subTotalPrice -= success.subTotalPrice;
                         self.invoiceItemSelected.selectedPopup = false;
                         self.showDetailInvoiceDialogToggle = false;
                     },
@@ -498,43 +592,42 @@
                             }
                         }
 
-                        notificationFactory.error(error)
+                        notificationFactory.error(error);
                     });
             }
-        }
+        };
 
-        // Create Credit Nota Dialog
-        self.showCreateCreditNotaDialog = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
+        //self.showCreateCreditNoteDialog = function ($event) {
+        //    $event.preventDefault();
+        //    $event.stopPropagation();
 
-            self.invoiceItemSelected.selectedPopup = true;
-            hideInvoiceItemMenu();
+        //    self.invoiceItemSelected.selectedPopup = true;
+        //    hideInvoiceItemMenu();
 
-            $translate('GENERAL.COMING_SOON').then(function (text) {
-                notificationFactory.warning(text);
-            });                
+        //    $translate('GENERAL.COMING_SOON').then(function (text) {
+        //        notificationFactory.warning(text);
+        //    });
 
-            self.invoiceItemSelected.selectedPopup = false;
+        //    self.invoiceItemSelected.selectedPopup = false;
 
 
-            //    self.detailInvoiceForm.$setPristine();
+        //    //    self.detailInvoiceForm.$setPristine();
 
-            //    self.invoiceId = self.invoiceItemSelected.id;
-            //    invoiceItemService.get({ id: self.invoiceItemSelected.id },
-            //        function (success) {
-            //            self.invoiceNumber = success.number;
-            //            self.invoiceSubTotalPrice = success.subTotalPrice;
-            //            self.invoiceSentToEmail = success.toEmail;
-            //            self.invoiceEmailSubject = success.emailSubject;
-            //            self.invoiceEmailBody = success.emailBody;
-            //            self.showDetailInvoiceDialogToggle = true;
-            //            self.loading = false;
-            //        },
-            //        function (error) {
-            //            notificationFactory.error(error);
-            //        });
-        }
+        //    //    self.invoiceId = self.invoiceItemSelected.id;
+        //    //    invoiceItemService.get({ id: self.invoiceItemSelected.id },
+        //    //        function (success) {
+        //    //            self.invoiceNumber = success.number;
+        //    //            self.invoiceSubTotalPrice = success.subTotalPrice;
+        //    //            self.invoiceSentToEmail = success.toEmail;
+        //    //            self.invoiceEmailSubject = success.emailSubject;
+        //    //            self.invoiceEmailBody = success.emailBody;
+        //    //            self.showDetailInvoiceDialogToggle = true;
+        //    //            self.loading = false;
+        //    //        },
+        //    //        function (error) {
+        //    //            notificationFactory.error(error);
+        //    //        });
+        //};
 
         // Delete Invoice Dialog
         self.showDeleteInvoiceDialog = function ($event) {
@@ -544,13 +637,13 @@
             self.invoiceItemSelected.selectedPopup = true;
             hideInvoiceItemMenu();
 
-            self.invoiceNumber = self.invoiceItemSelected.number
+            self.invoiceNumber = self.invoiceItemSelected.number;
             self.showDeleteInvoiceDialogToggle = true;
-        }
+        };
 
         self.sendDeleteInvoice = function ($event) {
             invoiceItemService.delete({ id: self.invoiceItemSelected.id },
-                function (success) {                     
+                function (success) {
                     self.invoiceItems.subTotalPrice -= self.invoiceItemSelected.subTotalPrice;
                     self.invoiceItems.splice(self.invoiceItemSelected.index, 1);
                     self.invoiceItemSelected.selectedPopup = false;
@@ -559,12 +652,12 @@
                 function (error) {
                     notificationFactory.error(error);
                 });
-        }
+        };
 
         self.cancelDeleteInvoiceDialog = function ($event) {
             self.invoiceItemSelected.selectedPopup = false;
             self.showDeleteInvoiceDialogToggle = false;
-        }
+        };
         
         // PRIVATE FUNCTIONS
         var getAllItems = function () {
@@ -579,7 +672,7 @@
                 function () {
                     getAllInvoiceOverviewItems();
                 }, 0);
-        }
+        };
 
         var getAllInvoicingItems = function () {
             self.loading = true;
@@ -594,7 +687,7 @@
                 function (error) {
                     notificationFactory.error(error);
                 });
-        }
+        };
         var getAllInvoiceOverviewItems = function () {
             self.loading = true;
             invoiceItemService.query({ fromDate: self.dateCursor.from.toServerDateString(), toDate: self.dateCursor.to.toServerDateString() },
@@ -603,7 +696,12 @@
                     var subTotalPrice = 0, element, invoiceItems = self.invoiceItems;
                     for (var i = 0, ilen = invoiceItems.length; i < ilen; i++) {
                         element = invoiceItems[i];
-                        subTotalPrice += element.subTotalPrice;
+                        if (element.creditNote !== true) {
+                            subTotalPrice += element.subTotalPrice;
+                        }
+                        else {
+                            subTotalPrice -= element.subTotalPrice;
+                        }
                     }
                     self.invoiceItems.subTotalPrice = subTotalPrice;
                     self.loading = false;
@@ -611,13 +709,13 @@
                 function (error) {
                     notificationFactory.error(error);
                 });
-        }
+        };
 
-        var createInvoiceContentObject = function (includeInvoice) {
+        var createInvoiceContentObject = function (includeInvoice, creditNote) {
             var invoiceContent = {
                 toEmail: self.invoiceSentToEmail,
-                emailSubject: self.invoiceEmailSubject,
-                emailBody: self.invoiceEmailBody,
+                emailSubject: creditNote !== true ? self.invoiceEmailSubject : self.creditNoteEmailSubject,
+                emailBody: creditNote !== true ? self.invoiceEmailBody : self.creditNoteEmailBody
             };
 
             if (includeInvoice) {
@@ -666,7 +764,7 @@
                 }
             }
             return invoiceContent;
-        }
+        };
 
         var defaultSelectFirstTask = function () {
             if (!self.sorting.selectedUsers) {
@@ -674,7 +772,7 @@
                     self.toggleSelectTask(null, self.sorting.groupTasks[0]);
                 }
             }
-        }
+        };
 
         var deselectedSortingInvoice = function () {
             var element, users, groupTasks = self.sorting.groupTasks;
@@ -688,7 +786,7 @@
             }
             self.sorting.selectedTotalPrice = 0;
             self.sorting.selectedUsers = 0;
-        }
+        };
 
         var calculateTaxVatTotal = function (calculateTax, calculateVat) {
             var sortingSelected = self.sorting.selected;
@@ -716,7 +814,7 @@
             }
 
             sortingSelected.totalPrice = (sortingSelected.subTotalPrice ? sortingSelected.subTotalPrice : 0) + sortingSelected.taxPrice + sortingSelected.vatPrice;
-        }
+        };
 
         var generateSelectedInvoice = function () {
             self.sorting.selected = { groupTasks: [] };
@@ -725,24 +823,24 @@
             var user, users, usersSelected = [];
             for (var i = 0, ilen = groupTasks.length; i < ilen; i++) {
                 element = groupTasks[i];
-                    users = element.users, usersSelected = [];
-                    for (var j = 0, jlen = users.length; j < jlen; j++) {
-                        user = users[j];
-                        if (user.selected) {
-                            usersSelected.push($.extend(false, {}, user));
-                            subTotalPrice = subTotalPrice + (user.price ? user.price : 0);
-                        }
+                users = element.users, usersSelected = [];
+                for (var j = 0, jlen = users.length; j < jlen; j++) {
+                    user = users[j];
+                    if (user.selected) {
+                        usersSelected.push($.extend(false, {}, user));
+                        subTotalPrice = subTotalPrice + (user.price ? user.price : 0);
                     }
-                    if (usersSelected.length > 0) {
-                        elementSelected = $.extend(false, {}, element);
-                        elementSelected.usersSelected = usersSelected;
-                        selectedGroupTasks.push(elementSelected);
-                    }
+                }
+                if (usersSelected.length > 0) {
+                    elementSelected = $.extend(false, {}, element);
+                    elementSelected.usersSelected = usersSelected;
+                    selectedGroupTasks.push(elementSelected);
+                }
             }
 
             self.sorting.selected.subTotalPrice = subTotalPrice;
             calculateTaxVatTotal(true, true);
-        }
+        };
 
         var showGroupCollAndFindFirstInvoiceDialog = function () {
             // Init only one group, not shown
@@ -778,11 +876,10 @@
             }
 
             // If a user is selected
-            if (!self.firstSelectedGroup && !self.firstSelectedTask)
-            {
+            if (!self.firstSelectedGroup && !self.firstSelectedTask) {
                 self.firstSelectedTask = self.firstTask;
             }
-        }
+        };
 
         var saveInvoiceSetting = function () {
             var referenceType = self.firstSelectedGroup ? 'group' : 'task';
@@ -805,9 +902,9 @@
                 function (success) {
                 },
                 function (error) {
-                    notificationFactory.error(error)
+                    notificationFactory.error(error);
                 });
-        }
+        };
 
         var getEmailAndInvoiceText = function () {
             var referenceType = self.firstSelectedGroup ? 'group' : 'task';
@@ -820,7 +917,7 @@
                 function (error) {
                     notificationFactory.error(error);
                 });
-        }
+        };
 
         var setEmailAndInvoiceText = function (invoiceSetting) {
             self.invoiceSentToEmail = invoiceSetting.toEmail;
@@ -844,7 +941,6 @@
                 });
             }
 
-
             if (!self.invoiceTitle) {
                 $translate('INVOICE.INVOICE_TITLE_DFAULTTEXT').then(function (text) {
                     self.invoiceTitle = text;
@@ -858,7 +954,7 @@
             }
 
             calculateTaxVatTotal(true, true);
-        }
+        };
 
         var getCurrentUserAndOrganization = function () {
             self.currentUser = currentUserService.getUser();
@@ -868,7 +964,7 @@
                         self.showGroupTaskTotals = true;
                     }
                 });
-        }
+        };
 
         var activate = function () {
             var dateCursorFrom = new Date().toDateOnlyFirstDayInMonth();
@@ -887,7 +983,7 @@
             getCurrentUserAndOrganization();
             // LOADS ALL ITEMS
             getAllItems();
-        }
+        };
         activate();
     }
 })();

@@ -38,7 +38,7 @@ namespace Sortingtime.Api
                     Number = r.Number,
                     TotalTime = r.TotalTime,
                     ToEmail = r.ToEmail,
-                }).ToListAsync();
+                }).OrderBy(i => i.Id).ToListAsync();
                 
             return Json(reports);
         }
