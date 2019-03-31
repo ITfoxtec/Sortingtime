@@ -3,21 +3,21 @@
 
     Date.prototype.toDateOnly = function () {
         return new Date(this.toDateString());
-    }    
+    };   
 
     Date.prototype.toDateOnlyFirstDayInMonth = function () {
         return new Date(this.getFullYear(), this.getMonth(), 1);
-    }
+    };
 
     Date.prototype.toDateOnlyLastDayInMonth = function () {
-        return new Date(this.getFullYear(), this.getMonth(), 1).addMonths(1).addDays(-1);
-    }
+        return new Date(this.getFullYear(), this.getMonth() + 1, 0);
+    };
 
     // Add days to Date object
     Date.prototype.addDays = function (days) {
         this.setTime(this.getTime() + (days * (1000 * 60 * 60 * 24)));
         return this;
-    }
+    };
 
     Date.prototype.addMonths = function (months) {
         var thisYear = this.getFullYear();
@@ -44,15 +44,15 @@
 
         var newDate = new Date(thisYear, thisMonth, thisDay);       
         return newDate;
-    }
+    };
 
     Date.prototype.toServerDateString = function () {
         var month = this.getMonth() + 1;
         return this.getFullYear() + '-' + pad(month) + '-' + pad(this.getDate()) + 'T00:00:00';
-    }
+    };
 
     var pad = function (n) {
         return (n < 10) ? ("0" + n) : n;
-    }
+    };
 
 })();
