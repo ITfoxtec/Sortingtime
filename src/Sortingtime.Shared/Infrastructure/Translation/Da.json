@@ -103,6 +103,8 @@
     "PAYMENT_DETAILS": "Betalingsoplysninger",
     "INVOICE_NUMBER": "Fakturanummer",
     "INVOICE_DATE": "Fakturadato",
+    "CREDIT_NUMBER": "Kreditnotanummer",
+    "CREDIT_DATE": "Kreditnotadato",
     "PAYMENT_TERMS": "Betalingsbetingelser",
     "REFERENCE": "Reference",
     "SUBTOTAL": "Subtotal",

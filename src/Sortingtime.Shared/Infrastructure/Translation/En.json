@@ -103,6 +103,8 @@
     "PAYMENT_DETAILS": "Payment details",
     "INVOICE_NUMBER": "Invoice number",
     "INVOICE_DATE": "Invoice date",
+    "CREDIT_NUMBER": "Credit note number",
+    "CREDIT_DATE": "Credit note date",
     "PAYMENT_TERMS": "Payment terms",
     "REFERENCE": "Reference",
     "SUBTOTAL": "Subtotal",

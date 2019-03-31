@@ -106,7 +106,7 @@ namespace Sortingtime.PdfMailWebJob.HtmlGenerators
             yield return "      <div class='inner-row'>";
             yield return "          <div class='col-md-5'>";
             yield return "              <div>";
-            yield return "                  <div class='control-label'>" + translate.Get("INVOICE.INVOICE_NUMBER") + ":</div>";
+            yield return "                  <div class='control-label'>" + (!invoice.CreditNote ? translate.Get("INVOICE.INVOICE_NUMBER") : translate.Get("INVOICE.CREDIT_NUMBER")) + ":</div>";
             yield return "              </div>";
             yield return "          </div>";
             yield return "          <div class='col-md-7'>";
@@ -118,7 +118,7 @@ namespace Sortingtime.PdfMailWebJob.HtmlGenerators
             yield return "      <div class='inner-row'>";
             yield return "          <div class='col-md-5'>";
             yield return "              <div>";
-            yield return "                  <div class='control-label'>" + translate.Get("INVOICE.INVOICE_DATE") + ":</div>";
+            yield return "                  <div class='control-label'>" + (!invoice.CreditNote ? translate.Get("INVOICE.INVOICE_DATE") : translate.Get("INVOICE.CREDIT_DATE")) + ":</div>";
             yield return "              </div>";
             yield return "          </div>";
             yield return "          <div class='col-md-7'>";

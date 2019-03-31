@@ -167,7 +167,7 @@
             ATTACHED_INVOICE: 'Vedhæftet faktura',
             INVOICE_TITLE: 'Faktura titel',
             INVOICE_TITLE_DFAULTTEXT: 'Faktura',
-            INVOICE_NUMBER_ADDED: 'Faktura nummer tilføjes',
+            INVOICE_NUMBER_ADDED: 'Fakturanummer tilføjes',
             INVOICE_TITLE_SUB_TEXT: 'Faktura titel undertekst',
             INVOICE_TITLE_SUB_DFAULTTEXT: 'Faktura fra <begin_time> til <end_time>',
             YOUR_ORGANISATION: 'Din organisation',
