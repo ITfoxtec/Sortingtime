@@ -4,6 +4,7 @@
     <Description>Sortingtime</Description>
     <AssemblyName>Sortingtime</AssemblyName>
     <TargetFramework>net472</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <Copyright>© 2018 ITfoxtec</Copyright>
