@@ -80,9 +80,9 @@
                         });
 
                         element.bind("keydown", function (event) {
-                            if (event.which == 13) {
+                            if (event.which === 13) {
                                 if (debugLog) console.log("activeSaveDirective; keydown = 13");
-                                if (element.context.tagName != "TEXTAREA" || event.ctrlKey) {
+                                if (element.context.tagName !== "TEXTAREA" || event.ctrlKey) {
                                     if (ngModel.$valid) {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -90,7 +90,7 @@
                                     }
                                 }
                             }
-                            else if (event.which == 27) {
+                            else if (event.which === 27) {
                                 if (debugLog) console.log("activeSaveDirective; keydown = 27");
                                 event.preventDefault();
                                 event.stopPropagation();

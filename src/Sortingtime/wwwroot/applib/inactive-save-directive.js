@@ -13,7 +13,7 @@
             require: ['ngModel', '^?groupTaskDropdown'],
             scope: {
                 setFocus: '@', // text
-                model: '=ngModel',
+                model: '=ngModel'
             },
             link: function (scope, element, attrs, ctrls) {
                 var ngModel = ctrls[0], eventBinded = false,
@@ -48,18 +48,20 @@
                         });
 
                         element.bind("keydown", function (event) {
-                            if (event.which == 13) {
+                            if (event.which === 13) {
                                 if (debugLog) console.log("inactiveSaveDirective; keydown = 13");
-                                if (ngModel.$valid) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    if (groupTaskDropdown) {
-                                        groupTaskDropdown.save();
+                                if (element.context.tagName !== "TEXTAREA" || event.ctrlKey) {
+                                    if (ngModel.$valid) {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        if (groupTaskDropdown) {
+                                            groupTaskDropdown.save();
+                                        }
+                                        element.blur();
                                     }
-                                    element.blur();
                                 }
                             }
-                            else if (event.which == 27) {
+                            else if (event.which === 27) {
                                 if (debugLog) console.log("inactiveSaveDirective; keydown = 27");
                                 event.preventDefault();
                                 event.stopPropagation();
