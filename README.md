@@ -3,4 +3,4 @@ Sortingtime is an <a href="https://sortingtime.com">online</a> time tracking sys
 
 You can find Sortingtime on <a href="https://sortingtime.com">Sortingtime.com</a>
 
-
+Documentation in <a href="https://github.com/ITfoxtec/Sortingtime/wiki">Wiki</a>
