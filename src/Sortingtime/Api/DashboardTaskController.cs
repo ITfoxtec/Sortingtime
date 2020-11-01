@@ -31,7 +31,7 @@ namespace Sortingtime.Api.Controllers
                 return new BadRequestObjectResult(ModelState);
             }
 
-            var task = await DbContext.Tasks.Where(t => t.Group.PartitionId == CurrentPartitionId && t.Name.Equals(item.Name, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefaultAsync();
+            var task = await DbContext.Tasks.Where(t => t.Group.PartitionId == CurrentPartitionId && t.GroupId == item.GroupId && t.Name.Equals(item.Name, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefaultAsync();
             if (task == null)
             {
                 if (!(await DbContext.Groups.Where(g => g.PartitionId == CurrentPartitionId && g.Id == item.GroupId).AnyAsync()))
