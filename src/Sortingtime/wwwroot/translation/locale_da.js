@@ -185,7 +185,7 @@
             REFERENCE: 'Reference',
             REFERENCE_LONG: 'Kundereference',
             SUBTOTAL: 'Subtotal',
-            TOTAL: 'I alt',
+            TOTAL: 'I alt (DKK)',
             VAT: 'Moms',
             TAX: 'Skat',
             RESEND_INVOICE: 'Gensend faktura',
