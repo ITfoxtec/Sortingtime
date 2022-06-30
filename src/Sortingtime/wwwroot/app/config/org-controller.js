@@ -17,8 +17,9 @@
         // Indicates if the view is being loaded
         self.loading = false;
         self.cultures = [
-              { label: 'ORG.CULTURES.ENGLISH_USA', name: 'en-US' },
+              { label: 'ORG.CULTURES.ENGLISH_EU', name: 'en-BE' },
               { label: 'ORG.CULTURES.ENGLISH_UK', name: 'en-GB' },
+              { label: 'ORG.CULTURES.ENGLISH_USA', name: 'en-US' },
               { label: 'ORG.CULTURES.DANISH', name: 'da-DK' },
         ];
         self.showLanguageDialogToggle = false;

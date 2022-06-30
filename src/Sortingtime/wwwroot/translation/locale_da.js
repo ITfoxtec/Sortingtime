@@ -217,8 +217,9 @@
             SELECT_COUNTRY_AND_LANGUAGE: 'Vælg land og sprog',
             CULTURES: {
                 AUTO: 'Automatisk',
-                ENGLISH_USA: 'Engelsk USA',
+                ENGLISH_EU: 'Engelsk EU',
                 ENGLISH_UK: 'Engelsk UK',
+                ENGLISH_USA: 'Engelsk USA',
                 DANISH: 'Dansk',
             },
         },

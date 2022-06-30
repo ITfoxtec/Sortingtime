@@ -6,7 +6,7 @@ namespace Sortingtime.Infrastructure.Localization
 {
     public static class SortingtimeCultures
     {
-        private static string[] SupportedCultureNames { get; } = new string[] { "da-DK", "en-US", "en-GB" };
+        private static string[] SupportedCultureNames { get; } = new string[] { "da-DK", "en-US", "en-GB", "en-BE" };
 
         public static CultureInfo[] SupportedCultures { get; } = SupportedCultureNames.Select(c => new CultureInfo(c)).ToArray(); 
 

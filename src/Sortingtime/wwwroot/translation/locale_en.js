@@ -216,8 +216,9 @@
             SELECT_COUNTRY_AND_LANGUAGE: 'Select country and language',
             CULTURES: {
                 AUTO: 'Automatic',
-                ENGLISH_USA: 'English USA',
+                ENGLISH_EU: 'English EU',
                 ENGLISH_UK: 'English UK',
+                ENGLISH_USA: 'English USA',
                 DANISH: 'Danish',
             },
         },
